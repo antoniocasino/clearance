@@ -1,7 +1,8 @@
 import streamlit as st
 import time
 import datetime
-from utils import calculate_kdn_qbwn
+from utils import calculate_kdn_qbwn, create_pdf
+
 def main():
     st.set_page_config(page_title="Clearance Calculator")    
     st.title("Dialyzer clearance and blood flow rate needed to reach the target value of eKt/V") 
@@ -86,10 +87,25 @@ def main():
                 st.write("Blood flow rate needed (ml/min)", round(results["qbn"], 1))
                 if results["qbn"] > 400:
                     st.warning("""Blood flow requirement too high. It is recommended to increase KOA and/or reduce eKt/V""")
+                
+                pdf = create_pdf({
+                    "patient id":patient_id,"date":date,"patient's urea volume (L)":vdp, "expected intradialysis weight loss (L)":uf, 
+                    "In vitro KOA of the dialyzer":koavitro, "HDFPRE (ml/min)":hdfpre, "HDFPOST (ml/min)":hdfpost,
+                    "Diaysate Flow rate (ml/min) ":qd, "Session length (min)":t, 
+                    "eKt/V target":ekvt,"kdn":results["kdn"],"qbn":results["qbn"]
+                })
+
+                # Provide download button
+                st.download_button(
+                    label="Download PDF",
+                    data=pdf,
+                    file_name="form_data.pdf",
+                    mime="application/pdf"
+                )
             else:
                 st.write(results)  # Print the error message
                                     
-            
+
             
             
     
