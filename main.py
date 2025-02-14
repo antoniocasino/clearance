@@ -9,7 +9,7 @@ def main():
           
     
     
-    patient_id = st.text_input("Patient Identifier", key="id")
+    patient_id = st.text_input("Patient Identifier", key="id", value="001")
     date = st.date_input(
         "Select a date (dd/mm/yyyy)",
         value=datetime.datetime.now(),
@@ -89,17 +89,17 @@ def main():
                     st.warning("""Blood flow requirement too high. It is recommended to increase KOA and/or reduce eKt/V""")
                 
                 pdf = create_pdf({
-                    "patient id":patient_id,"date":date,"patient's urea volume (L)":vdp, "expected intradialysis weight loss (L)":uf, 
+                    "Patient id":patient_id,"Date":date,"Patient's urea volume (L)":vdp, "Expected intradialysis weight loss (L)":uf, 
                     "In vitro KOA of the dialyzer":koavitro, "HDFPRE (ml/min)":hdfpre, "HDFPOST (ml/min)":hdfpost,
                     "Diaysate Flow rate (ml/min) ":qd, "Session length (min)":t, 
-                    "eKt/V target":ekvt,"kdn":results["kdn"],"qbn":results["qbn"]
+                    "EKt/V target":ekvt,"Kdn (mL/min)":round(results["kdn"], 1),"Blood flow rate needed": round(results["qbn"], 1)
                 })
 
                 # Provide download button
                 st.download_button(
                     label="Download PDF",
                     data=pdf,
-                    file_name="form_data.pdf",
+                    file_name=f"{patient_id}_clearance_data.pdf",
                     mime="application/pdf"
                 )
             else:
