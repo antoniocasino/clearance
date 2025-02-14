@@ -84,10 +84,13 @@ def main():
             if isinstance(results, dict):
                 st.write("Kdn (mL/min)", round(results["kdn"], 1))
                 st.write("Blood flow rate needed (ml/min)", round(results["qbn"], 1))
+                if results["qbn"] > 450:
+                    st.warning("""Blood flow requirement too high. It is recommended to increase KOA and/or reduce eKt/V""")
             else:
                 st.write(results)  # Print the error message
                                     
-            st.success("Success!!")
+            
+            
             
     
 
