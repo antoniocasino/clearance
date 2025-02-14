@@ -1,11 +1,10 @@
 import math
 
-def calculate_kdn_qbwn(ptid, vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt):
+def calculate_kdn_qbwn( vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt):
     """
     Calculates KDN, Qbw, and Qbn based on provided input parameters.
 
-    Args:
-        ptid: Patient ID (not used in calculations, but included for consistency)
+    Args:        
         vdp: Volume of distribution (L)
         uf: Ultrafiltration rate (mL/min)
         koavitro: In vitro mass transfer coefficient (mL/min)

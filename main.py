@@ -4,7 +4,7 @@ import datetime
 from utils import calculate_kdn_qbwn
 def main():
     st.set_page_config(page_title="Clearance Calculator")    
-    st.title("Dialyzer Clearance needed (Kdn) to reach the target value of eKt/V") 
+    st.title("Dialyzer clearance and blood flow rate needed to reach the target value of eKt/V") 
           
     
     
@@ -27,7 +27,7 @@ def main():
         max_value=5.0,            
         step=0.1,
         value=2.0,
-        format="%.2f"
+        format="%.1f"
     )  
     koavitro = st.number_input(
         "In vitro KOA of the dialyzer (ml/min) (acceptable range of values: 600-2000)",
@@ -74,18 +74,18 @@ def main():
     )   
                    
    
-    extract_button = st.button("Extract data...")
+    extract_button = st.button("Calculate Kdn")
     
     if extract_button:
         with st.spinner("Extracting... it takes time..."):            
 
-            results = calculate_kdn_qbwn(patient_id, vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt)            
+            results = calculate_kdn_qbwn(vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt)            
             
             if isinstance(results, dict):
-                st.write("Kdn (mL/min)", round(results["kdn"], 2))
-                st.write("Blood flow rate needed to achieve Kdn (Qbn, ml/min)", round(results["qbn"], 2))
+                st.write("Kdn (mL/min)", round(results["kdn"], 1))
+                st.write("Blood flow rate needed (ml/min)", round(results["qbn"], 1))
             else:
-                print(results)  # Print the error message
+                st.write(results)  # Print the error message
                                     
             st.success("Success!!")
             
