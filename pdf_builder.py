@@ -5,12 +5,8 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from io import BytesIO
 
-def create_vertical_table(patient_data):
+def create_vertical_table(data):
     """Creates a vertical table for a single patient's data."""
-
-    data = []
-    for key, value in patient_data.items():
-        data.append([key, value])  # Key-value pairs become rows
 
     table = Table(data)
     table.setStyle(TableStyle([
@@ -36,9 +32,28 @@ def create_pdf(form_data):
     elements.append(Paragraph("Patient Data Report", style_heading))
     elements.append(Spacer(1, 0.5*inch))
 
-    table1 = create_vertical_table(form_data)
+    count = 0
+    patient_data1 = []
+    for key, value in form_data.items():
+        if count < len(form_data) - 2:  # Exclude the last two items
+            patient_data1.append([key, value])
+        count += 1  
+    table1 = create_vertical_table(patient_data1)
     elements.append(table1)
+    elements.append(Spacer(1, 0.5*inch)) 
    
+    elements.append(Paragraph("Results", style_heading))
+    elements.append(Spacer(1, 0.5*inch))
+    patient_and_last_two_items = []
+    count = 0
+    for key, value in form_data.items():
+        if count == 0 or count >= len(form_data) - 2:
+           patient_and_last_two_items.append([key, value])
+        count += 1
+    table2 = create_vertical_table(patient_and_last_two_items)    
+    
+    elements.append(table2)
+    elements.append(Spacer(1, 0.2*inch)) 
     doc.build(elements)
 
     pdf_buffer.seek(0)

@@ -89,7 +89,7 @@ def clearance_page():
                     st.warning("""Blood flow requirement too high. It is recommended to increase KOA and/or reduce eKt/V""")
                 
                 pdf = create_pdf({
-                    "Patient id":patient_id,"Date":date,"Patient's urea volume (L)":vdp, "Expected intradialysis weight loss (L)":uf, 
+                    "Patient id":patient_id,"Date":date.strftime("%d/%m/%Y"),"Patient's urea volume (L)":vdp, "Expected intradialysis weight loss (L)":uf, 
                     "In vitro KOA of the dialyzer":koavitro, "HDFPRE (ml/min)":hdfpre, "HDFPOST (ml/min)":hdfpost,
                     "Diaysate Flow rate (ml/min) ":qd, "Session length (min)":t, 
                     "EKt/V target":ekvt,"Kdn (mL/min)":round(results["kdn"], 1),"Blood flow rate needed": round(results["qbn"], 1)
@@ -99,7 +99,7 @@ def clearance_page():
                 st.download_button(
                     label="Download PDF",
                     data=pdf,
-                    file_name=f"{patient_id}_clearance_data.pdf",
+                    file_name=f"{patient_id}_{date}_clearance_data.pdf",
                     mime="application/pdf"
                 )
             else:
