@@ -16,14 +16,14 @@ def clearance_page():
         format="DD/MM/YYYY",
     )
     vdp = st.number_input(
-        "patient's urea volume (L) (acceptable range of values: 20-50)",
+        "Patient's urea volume (L) (acceptable range of values: 20-50)",
         min_value=20,
         max_value=50,       
         value=35,     
         step=1
     )
     uf = st.number_input(
-        "expected intradialysis weight loss (L) (acceptable range of values: 0.1-5)",
+        "Expected intradialysis weight loss (L) (acceptable range of values: 0.1-5)",
         min_value=0.1,
         max_value=5.0,            
         step=0.1,
@@ -75,7 +75,7 @@ def clearance_page():
     )   
                    
    
-    extract_button = st.button("Calculate Kdn")
+    extract_button = st.button("Calculate")
     
     if extract_button:
         with st.spinner("Extracting... it takes time..."):            
@@ -83,16 +83,16 @@ def clearance_page():
             results = calculate_kdn_qbwn(vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt)            
             
             if isinstance(results, dict):
-                st.write("Kdn (mL/min)", round(results["kdn"], 1))
+                st.write("Dialyzer urea clearance needed (ml/min)", round(results["kdn"], 1))
                 st.write("Blood flow rate needed (ml/min)", round(results["qbn"], 1))
                 if results["qbn"] > 400:
-                    st.warning("""Blood flow requirement too high. It is recommended to increase KOA and/or reduce eKt/V""")
+                    st.error("""Blood flow requirement too high. It is recommended to increase KOA and/or reduce eKt/V""")
                 
                 pdf = create_pdf({
                     "Patient id":patient_id,"Date":date.strftime("%d/%m/%Y"),"Patient's urea volume (L)":vdp, "Expected intradialysis weight loss (L)":uf, 
                     "In vitro KOA of the dialyzer":koavitro, "HDFPRE (ml/min)":hdfpre, "HDFPOST (ml/min)":hdfpost,
                     "Diaysate Flow rate (ml/min) ":qd, "Session length (min)":t, 
-                    "EKt/V target":ekvt,"Kdn (mL/min)":round(results["kdn"], 1),"Blood flow rate needed": round(results["qbn"], 1)
+                    "eKt/V target":ekvt,"Dialyzer urea clearance needed (ml/min)":round(results["kdn"], 1),"Blood flow rate needed": round(results["qbn"], 1)
                 })
 
                 # Provide download button

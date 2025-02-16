@@ -29,7 +29,7 @@ def create_pdf(form_data):
     styles = getSampleStyleSheet()
     style_heading = ParagraphStyle(name='Heading', parent=styles['Heading1'], fontName='Helvetica-Bold', fontSize=18, textColor=colors.blue, alignment=1)
 
-    elements.append(Paragraph("Patient Data Report", style_heading))
+    elements.append(Paragraph("Input Data", style_heading))
     elements.append(Spacer(1, 0.5*inch))
 
     count = 0
@@ -42,7 +42,7 @@ def create_pdf(form_data):
     elements.append(table1)
     elements.append(Spacer(1, 0.5*inch)) 
    
-    elements.append(Paragraph("Results", style_heading))
+    elements.append(Paragraph("Output Data", style_heading))
     elements.append(Spacer(1, 0.5*inch))
     patient_and_last_two_items = []
     count = 0
