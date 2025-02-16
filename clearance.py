@@ -30,6 +30,7 @@ def clearance_page():
         value=2.0,
         format="%.1f"
     )  
+    
     koavitro = st.number_input(
         "In vitro KOA of the dialyzer (ml/min) (acceptable range of values: 600-2000)",
         min_value=600,

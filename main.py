@@ -27,6 +27,7 @@ def home_page():
         'Max': ["", 50, 5, 2000, 250, 150, 1000, 480, 2.0],
         'Example': ["PTID", 35, 2, 1200, 0, 0, 500, 240, 1.4]
     }
+    
     df_input = pd.DataFrame(input_data)
     st.write("Input Data")  # Add a title for the input table
     st.dataframe(df_input,hide_index=True)  # or st.table(df_input) for a static table
