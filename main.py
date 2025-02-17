@@ -8,7 +8,15 @@ from pages.contacts import contacts_page
 
 def main():
     st.set_page_config(page_title="Clearance Calculator")            
-
+    st.markdown("""
+         <style>
+         [data-baseweb="tab"]>div {
+            font-size: large;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )      
     tabs = ["Home", "Clearance", "Contacts"]    
     tab1, tab2, tab3 = st.tabs(tabs)
     
