@@ -4,21 +4,6 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from io import BytesIO
 
-def create_pdf(form_data):
-    pdf_buffer = BytesIO()
-    doc = SimpleDocTemplate(pdf_buffer, pagesize=letter)
-    styles = getSampleStyleSheet()
-    elements = []
-
-    for key, value in form_data.items():
-        elements.append(Paragraph(f"{key}: {value}", styles['Normal']))
-
-    doc.build(elements)
-    pdf_buffer.seek(0)
-    return pdf_buffer
-
-
-
 def calculate_kdn_qbwn( vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt):
     """
     Calculates KDN, Qbw, and Qbn based on provided input parameters.
