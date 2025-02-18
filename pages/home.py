@@ -34,8 +34,8 @@ def home_page():
         'Output': ["Dialyzer Urea Clearance needed to attain the eKt/V target *", "Blood flow rate needed to attain the required Kdn value *"],
         'Symbol': ["Kdn", "Qbn"],
         'Units': ["ml/min", "ml/min"],
-        'Min': [100, 100],
-        'Max': [300, 450],
+        'Min': ["100", "100"],
+        'Max': ["300", "450"],
         'Example': [239, 351]
     }
 
