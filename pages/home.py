@@ -19,8 +19,8 @@ def home_page():
         'Input': ["Patient ID", "Patient’s urea volume", "Expected intradialysis weight loss", "KoA in vitro of the dialyzer", "Pre-dialyzer infusion rate", "Post-dialyzer infusion rate", "Dialysate flow rate", "Session length", "eKt/V target of the current prescription"],
         'Symbol': ["PTID", "V", "UF", "KoA", "HDFPRE", "HDFPOST", "QD", "TD", "eKt/V"],
         'Units': ["", "L", "L or kg", "ml/min", "ml/min", "ml/min", "ml/min", "Min", "dimensionless"],
-        'Min': [0, 20, 0.1, 600, 0, 0, 100, 60, 0.3],
-        'Max': ["", 50, 5, 2000, 250, 150, 1000, 480, 2.0],
+        'Min': ["", "20", "0.1", "600", "0", "0", "100", "60", "0.3"],
+        'Max': ["", "50", "5", "2000", "250", "150", "1000", "480", "2.0"],
         'Example': ["PTID", 35, 2, 1200, 0, 0, 500, 240, 1.4]
     }
     
