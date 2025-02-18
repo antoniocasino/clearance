@@ -21,7 +21,7 @@ def home_page():
         'Units': ["", "L", "L or kg", "ml/min", "ml/min", "ml/min", "ml/min", "Min", "dimensionless"],
         'Min': ["", "20", "0.1", "600", "0", "0", "100", "60", "0.3"],
         'Max': ["", "50", "5", "2000", "250", "150", "1000", "480", "2.0"],
-        'Example': ["PTID", 35, 2, 1200, 0, 0, 500, 240, 1.4]
+        'Example': ["PTID", "35", "2", "1200", "0", "0", "500", "240", "1.4"]
     }
     
     df_input = pd.DataFrame(input_data)
@@ -36,7 +36,7 @@ def home_page():
         'Units': ["ml/min", "ml/min"],
         'Min': ["100", "100"],
         'Max': ["300", "450"],
-        'Example': [239, 351]
+        'Example': ["239", "351"]
     }
 
     df_output = pd.DataFrame(output_data)
