@@ -31,7 +31,8 @@ def koa_page():
         "kd",            
         value=250,     
         step=1        
-    )    
+    )
+
     koa_button = st.button(key="koa", label="Calculate")
 
     if koa_button:
