@@ -31,7 +31,6 @@ def home_page():
     Below are the respective input and output values for the three subroutines, with symbols, units of measurement, minimum and maximum levels of acceptability, and an example value:
     """, unsafe_allow_html=True)
 
-
     st.header("Table 1: Input and Output values of the subroutine “Adequacy”")
 
     input_data = {
