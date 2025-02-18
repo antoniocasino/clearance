@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 from components.kdn_calculator import calculate_kdn_qbwn
 from pages.clearance import clearance_page 
 from pages.home import home_page
-from pages.contacts import contacts_page
+from pages.koa import koa_page
 
 def main():
     st.set_page_config(page_title="Clearance Calculator")            
@@ -17,7 +17,7 @@ def main():
         """,
         unsafe_allow_html=True
     )      
-    tabs = ["Home", "Clearance", "Contacts"]    
+    tabs = ["Home", "Clearance", "KoA"]    
     tab1, tab2, tab3 = st.tabs(tabs)
     
     with tab1:
@@ -25,7 +25,7 @@ def main():
     with tab2:
         clearance_page()
     with tab3:
-        contacts_page()
+        koa_page()
    
         
    

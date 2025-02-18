@@ -83,9 +83,9 @@ def clearance_page():
     )   
                    
    
-    extract_button = st.button("Calculate")
+    clearnace_button = st.button(key="clearance", label="Calculate")
     
-    if extract_button:
+    if clearnace_button:
         with st.spinner("Extracting... it takes time..."):            
 
             results = calculate_kdn_qbwn(vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt)            
