@@ -6,17 +6,18 @@ from components.pdf_builder import create_pdf
 def clearance_page():    
     st.title("Dialyzer clearance and blood flow rate needed to reach the target value of eKt/V") 
     st.markdown("""
-         <style>
-        [data-testid="stWidgetLabel"] > div {
-            font-size: 20px
-        }
-        [data-testid="stNumberInputField"] {
-            font-size: 24px !important;
-            height: 50px !important;
-        }
-        .font-bigger{
-            font-size: 20px
-        }
+        <style>
+            [data-testid="stWidgetLabel"] > div {
+                height: 40px !important;
+                font-size: 20px
+            }
+            [data-testid="stNumberInputField"] {
+                font-size: 24px !important;
+                height: 40px !important;
+            }
+            .font-bigger{
+                font-size: 20px
+            }
         </style>
         """,
         unsafe_allow_html=True

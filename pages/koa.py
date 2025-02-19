@@ -9,7 +9,7 @@ def koa_page():
             }            
             [data-baseweb="base-input"] > input{
                 font-size: 24px !important;
-                height: 50px !important;
+                height: 40px !important;
             }
         </style>
         """,
@@ -51,4 +51,3 @@ def koa_page():
             if kdif_result is not None and koa_result is not None:
                 st.markdown(f"<span class='font-bigger'>Diffusive Kd  (ml/min) <strong>{round(kdif_result, 1)}</strong></span>" , unsafe_allow_html=True)
                 st.markdown(f"<span class='font-bigger'>KoA of the dialyzer in vitro  (ml/min) <strong>{round(koa_result, 1)}</strong></span>" , unsafe_allow_html=True)
-                
