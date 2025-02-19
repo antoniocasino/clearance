@@ -149,7 +149,7 @@ def home_page():
     st.dataframe(df_output,hide_index=True) # or st.table(df_output) for a static table
 
     st.markdown("""    
-    <p>* From specific sheet, calculated in vitro and in absence uf significant ultrafiltration (Qf≤30 ml/min)</p>
+    <p>* From specific sheet, calculated in vitro and in absence of significant ultrafiltration (Qf≤30 ml/min)</p>
     """, unsafe_allow_html=True)
 
 

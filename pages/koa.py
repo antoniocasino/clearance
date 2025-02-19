@@ -4,32 +4,41 @@ def koa_page():
     st.title("Dialyzer's characteristics (KoA)") 
     st.markdown("""
          <style>
-        [data-testid="stWidgetLabel"] > div {
-            font-size: large;
-        }
+            [data-testid="stWidgetLabel"] > div {
+                font-size: 20px;
+            }            
+            [data-baseweb="base-input"] > input{
+                font-size: 24px !important;
+                height: 50px !important;
+            }
         </style>
         """,
         unsafe_allow_html=True
     )   
     
     qb = st.number_input(
-        "qb",           
-        value=300,     
+        "Blood flow rate (ml/min)",           
+        value=300,
+        min_value=100,
+        max_value=450,
         step=1        
     )
     qd = st.number_input(
-        "qd",              
-        value=500,     
+        "Dialysate flow rate (ml/min)",              
+        value=500,    
+        max_value=500,    
         step=1        
     )
     qf = st.number_input(
-        "qf",        
-        value=10,     
+        "Ultrafiltration rate (ml/min)",        
+        value=10,
+        max_value=10,     
         step=1        
     )
     kd = st.number_input(
-        "kd",            
-        value=250,     
+        "Dialyzer Urea clearance (ml/min)",            
+        value=250,
+        max_value=250,
         step=1        
     )
 
@@ -40,5 +49,6 @@ def koa_page():
     
             kdif_result, koa_result = koa(qb=qb,qd=qd,qf=qf,kd=kd)
             if kdif_result is not None and koa_result is not None:
-                st.write(f"Kdif: {round(kdif_result, 1)}")
-                st.write(f"KoA: {round(koa_result, 1)}")
+                st.markdown(f"<span class='font-bigger'>Diffusive Kd  (ml/min) <strong>{round(kdif_result, 1)}</strong></span>" , unsafe_allow_html=True)
+                st.markdown(f"<span class='font-bigger'>KoA of the dialyzer in vitro  (ml/min) <strong>{round(koa_result, 1)}</strong></span>" , unsafe_allow_html=True)
+                

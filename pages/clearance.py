@@ -1,5 +1,4 @@
 import streamlit as st
-import time
 import datetime
 from components.kdn_calculator import calculate_kdn_qbwn
 from components.pdf_builder import create_pdf
@@ -9,7 +8,14 @@ def clearance_page():
     st.markdown("""
          <style>
         [data-testid="stWidgetLabel"] > div {
-            font-size: large;
+            font-size: 20px
+        }
+        [data-testid="stNumberInputField"] {
+            font-size: 24px !important;
+            height: 50px !important;
+        }
+        .font-bigger{
+            font-size: 20px
         }
         </style>
         """,
@@ -23,14 +29,14 @@ def clearance_page():
         format="DD/MM/YYYY",
     )
     vdp = st.number_input(
-        "Patient's urea volume (L) (range: 20-50)",
+        "Patient's urea volume (L)",
         min_value=20,
         max_value=50,       
         value=35,     
         step=1
     )
     uf = st.number_input(
-        "Expected intradialysis weight loss (L) (range: 0.1-5)",
+        "Expected intradialysis weight loss (L)",
         min_value=0.1,
         max_value=5.0,            
         step=0.1,
@@ -39,42 +45,42 @@ def clearance_page():
     )  
     
     koavitro = st.number_input(
-        "In vitro KOA of the dialyzer (ml/min) (range: 600-2000)",
+        "In vitro KOA of the dialyzer (ml/min)",
         min_value=600,
         max_value=2000,            
         step=1,
         value=1200,
     )                       
     hdfpre = st.number_input(
-        "HDFPRE (ml/min) (range: 0-150)",
+        "HDFPRE (ml/min)",
         min_value=0,
         max_value=150,
         value=0,            
         step=1
     )  
     hdfpost = st.number_input(
-        "HDFPOST (ml/min) (range: 0-150)",
+        "HDFPOST (ml/min)",
         min_value=0,
         max_value=150,            
         value=0,
         step=1
     )
     qd = st.number_input(
-        "Diaysate Flow rate (ml/min)  (range: 300-800)",
+        "Diaysate Flow rate (ml/min)",
         min_value=300,
         max_value=800, 
         value=500,           
         step=1
     )
     t = st.number_input(
-        "Session length (min) (range: 60-480)",
+        "Session length (min)",
         min_value=60,
         max_value=480,  
         value=240,          
         step=1
     )
     ekvt = st.number_input(
-        "eKt/V target (range: 0.3-2.0)",
+        "eKt/V target",
         min_value=0.3,
         max_value=2.0,            
         step=0.1,
@@ -91,8 +97,8 @@ def clearance_page():
             results = calculate_kdn_qbwn(vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt)            
             
             if isinstance(results, dict):
-                st.write("Dialyzer urea clearance needed (ml/min)", round(results["kdn"], 1))
-                st.write("Blood flow rate needed (ml/min)", round(results["qbn"], 1))
+                st.markdown(f"<span class='font-bigger'>Dialyzer urea clearance needed (ml/min) <strong>{round(results['kdn'], 1)}</strong></span>" , unsafe_allow_html=True)
+                st.markdown(f"<span class='font-bigger'>Blood flow rate needed (ml/min) <strong>{round(results['qbn'], 1)}</strong></span>", unsafe_allow_html=True)
                 if results["qbn"] > 400:
                     st.error("""Blood flow requirement too high. It is recommended to increase KOA and/or reduce eKt/V""")
                 
