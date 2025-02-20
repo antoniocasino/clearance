@@ -4,7 +4,7 @@ from components.ihd_calculator import calculate_ihd
 from components.pdf_builder import create_pdf
 
 def adequacy_page():    
-    st.title("PRESCRIPTION OF INCREMENTAL HD BASED ON UREA KINETICS") 
+    st.title("Prescription of incremental HD based on urea kinetics") 
     st.markdown("""
         <style>
             [data-testid="stWidgetLabel"] > div {
@@ -237,11 +237,34 @@ def adequacy_page():
 
                 pdf = create_pdf(
                     input_data ={
-                    "PTID":patient_id,"LABDATE":date, "NHDWK":NHDWK, "PIDI":PIDI, 
-                    "BW0":BW0,"BWT":BWT,"T":T,"QB":QB,"HDFPRE":HDFPRE,
-                    "HDFPOST":HDFPOST, "QD":QD,"KOAvitro":KOAvitro,
-                    "C0":C0,"CT":CT,"KRUw":KRUw, "UO":UO,"UUN":UUN},
-                    output_data=results,
+                    "Patient Identifier":patient_id,"Lab Date":date.strftime("%d/%m/%Y"), "Number of Hemodialysis sessions per week":NHDWK, "Preceding inter-dialytic interval":PIDI, 
+                    "Pre-dialysis Body Weight (kg)":BW0,"Post-dialysis Body weight (kg)":BWT,"Session length (min)":T,"Blood Flow Rate (ml/min)":QB,
+                    "Pre-dilution infusion rate (ml/min)":HDFPRE,
+                    "Post-dilution infusion rate (ml/min)":HDFPOST, "Dialysate flow rate ":QD,
+                    "Dialyzer urea KoA in vitro ":KOAvitro,
+                    "Pre-dialysis Serum Urea Nitrogen":C0,"Post-dialysis Serum Urea Nitrogen":CT,"Renal urea clearance (999 if urine)":KRUw,
+                    "Urinary Output ":UO,"Urinary Urea Nitrogen":UUN},
+                    output_data={"Patient Identifier":patient_id,
+                                 "Total Dialyzer Urea Clearance ":results['KTOT'],
+                                 "Single pool Kt/V ":results['SPKTV'],
+                                 "Equilibrated Kt/V ":results['EKTV'],
+                                 "Urea distribution volume (double pool)":results['VDP'],
+                                 "Renal urea clearance (calculated)":results['Kru'],
+                                 "KRU normalized per V 35 l ":results['KR35'],
+                                 "Equivalent Renal Clearance per V 35 l ":results['EKR35'],
+                                 "EKR35 ≥10 – 1.5 KRUN *":results['AdeqEKR'],
+                                 "Standard Kt/V":results['STDKTV'],
+                                 "StdKt/V ≥ 2.1":results['AdeqStdKTV'],
+                                 "Ultrafiltration rate ":results['UFR'],
+                                 "UFR ≤ 13 ml/h/kg":results['AdeqUFR'],
+                                 "TD needed for UFR=13 ml/h/kg":results['TDN'],
+                                 "Protein Catabolic rate normalized":results['PCRn'],
+                                 "EKR35 = 12-KRUN on 1HD/wk":results['EKTV_1HDwk_EKRVTM'],
+                                 "EKR35 = 12-KRUN on 2HD/wk":results['EKTV_2HDwk_EKRVTM'],
+                                 "EKR35 = 12-KRUN on 3HD/wk":results['EKTV_3HDwk_EKRVTM'],
+                                 "stdKt/V=2.3 on 1 HD/wk":results['EKTV_1HDwk_STDKTV'],
+                                 "stdKt/V=2.3 on 2 HD/wk":results['EKTV_2HDwk_STDKTV'],
+                                 "stdKt/V=2.3 on 3 HD/wk":results['EKTV_3HDwk_STDKTV']},
                     pageBreak=True
                 )
 

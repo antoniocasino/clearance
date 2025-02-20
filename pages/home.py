@@ -68,7 +68,7 @@ def home_page():
     
     prescription = {
         '#': [1, 2, 3, 4, 5, 6],
-        'Prescription': ["EKR35 = 12-KRUN on 1HD/wk","EKR35 = 12-KRUN on 1HD/wk","EKR35 = 12-KRUN on 1HD/wk","stdKt/V=2.3 on 1 HD/wk","stdKt/V=2.3 on 2 HD/wk","stdKt/V=2.3 on 3 HD/wk"],      
+        'Prescription': ["EKR35 = 12-KRUN on 1HD/wk","EKR35 = 12-KRUN on 2HD/wk","EKR35 = 12-KRUN on 3HD/wk","stdKt/V=2.3 on 1 HD/wk","stdKt/V=2.3 on 2 HD/wk","stdKt/V=2.3 on 3 HD/wk"],      
         'Symbol': ["", "", "", "", "", ""],
         'Units':  ["", "", "", "", "", ""],
         'Min':  ["", "", "", "", "", ""],
