@@ -185,8 +185,10 @@ def adequacy_page():
                     if isinstance(value, float):
                         results[key]=round(value,2) 
                     elif isinstance(value,datetime.datetime):
-                        results[key] = value.strftime("%d/%m/%Y")
-                
+                        results[key] = value.strftime("%d/%m/%Y") 
+                    else:                         
+                        results[key] = value
+
                 def format_float(val):
                     if isinstance(val, float):
                         return f"{val:.2f}"  # Format to 2 decimal place
@@ -199,7 +201,7 @@ def adequacy_page():
                                "EKR35","Adequacy based EKR35 ≥ minimum variable target (10 -1.5 KR35)","StdKt/V",
                                "Adequacy based on StdKt/V≥2.1 v/wk ","Hourly Ultrafiltration rate per kg of postdialysis Body weight ",
                                "Adequacy based on UF ≤ 13 ml/h per kg ",
-                               "Duration of HD session needed to achieve UFR =13 ml/h per kg  (min)",
+                               "Duration of HD session needed to achieve UFR =13 ml/h per kg",
                                "PCRn"],                    
                     'Units': ["ml/min","","ml/min",
                               "ml/min","ml/min","ml/min",
@@ -214,7 +216,9 @@ def adequacy_page():
                             ]
                 }
                 df_output = pd.DataFrame(output_data)                
-                st.dataframe(df_output.style.format(format_float).set_table_styles([{'selector': 'table', 'props': [('width', '40rem')]}]),hide_index=True) # Set the table width to 100%                
+                st.dataframe(df_output.style.format(format_float), 
+                             column_config={"Output": st.column_config.Column(width="large")},
+                             hide_index=True) # Set the table width to 100%                
 
                                                                                        
                 st.header("eKt/V needed to achieve adequacy on 1, 2, or 3 sessions per week")    
@@ -232,8 +236,10 @@ def adequacy_page():
                                results['EKTV_2HDwk_STDKTV'],results['EKTV_3HDwk_STDKTV']                               
                             ]
                 }
-                df_prescription = pd.DataFrame(prescription_data)                
-                st.dataframe(df_prescription.style.format(format_float).set_table_styles([{'selector': 'table', 'props': [('width', '40rem')]}]),hide_index=True) # Set the table width to 100%                
+                df_prescription = pd.DataFrame(prescription_data)                                
+                st.dataframe(df_prescription.style.format(format_float),
+                             column_config={"Output": st.column_config.Column(width="large")},
+                             hide_index=True) # Set the table width to 100%                
                 
 
                 pdf = create_pdf(
