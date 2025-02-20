@@ -37,18 +37,21 @@ def home_page():
         '#': [1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17],
         'Input': ["Patient id","Lab date","Number of HD per week","Preceding interdialytic interval","Pre-dialysis body weight","Post-dialysis body weight",
                   "Session length","Blood flow rate","Pre-dialyzer infusion rate","Post-dialyzer infusion rate","Dialysate flow rate ",
-                  "Dialyzer urea KoA in vitro ","Pre-dialysis Serum Urea Nitrogen","Post-dialysis Serum Urea Nitrogen","Renal urea clearance (999 if urine)",
+                  "Dialyzer urea KoA in vitro ","Pre-dialysis Serum Urea Nitrogen","Post-dialysis Serum Urea Nitrogen","Renal urea clearance (999 if urine)* ",
                   "Urinary Output ","Urinary Urea Nitrogen"],
         'Symbol': ["PTID","Lab date  ","NHDWK","PIDI","BW0","BWT","TD","Qb","HDFPRE","HDFPOST","Qd","KoA","C0","CT","KRU","UO","UUN"],
         'Units': ["", 	"(dd/mm/wk)","Days","Days","kg","kg","min","ml/min","ml/min","ml/min","ml/min","ml/min","mg/dl","mg/dl","ml/min","ml/day","mg/dl"],
         'Min': ["", "","1","2","20","20","60","100","0","0","100","600","20","10","0","0","0"],
         'Max': ["", "","3","7","140","140","480","450","250","150","1000","2000","200","100","7","4000","1000"],
         'Example   ': ["PTID", "12/01/2025","2","4","73","70","240","300","0","0","500","800","80","30","999","1000","500"]
-    }
-    
+    }    
     df_input = pd.DataFrame(input_data)
     st.markdown("""<div class="section-title"><strong>Input Data</strong></div>""",unsafe_allow_html=True)    
     st.dataframe(df_input,hide_index=True)  # or st.table(df_input) for a static table
+    st.markdown("""<span>* If the patient has forgotten to collect urine,
+                 a recent Kru value can be used, which should range from 0 
+                to 7 ml/min. If urine is available, enter 999 as the Kru input, which will allow the new Kru value to be calculated.</span><br/>""",
+                unsafe_allow_html=True)
 
     output_data = {
         '#': [1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14],

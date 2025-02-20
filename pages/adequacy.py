@@ -22,17 +22,10 @@ def adequacy_page():
         """,
         unsafe_allow_html=True
     )   
-    
-    if "previous_value" not in st.session_state:
-        st.session_state.previous_value = 0   
-    
+           
     def PIDI_value():
         if NHDWK ==1:
-            return 7
-        elif NHDWK ==2:
-            return 3
-        elif NHDWK ==3:
-            return 2
+            return 7       
     def PIDI_min():
         if NHDWK ==1:
             return 7
@@ -47,6 +40,25 @@ def adequacy_page():
             return 4
         elif NHDWK ==3:
             return 3    
+            
+    def KRU_max():
+        if UO >0 and UUN >0:
+            return 999
+        else:
+            return 7
+        
+    def KRU_min():
+        if UO >0 and UUN >0:
+            return 999
+        else:
+            return 0  
+          
+    def KRU_value():
+        if UO >0 and UUN >0:
+            return 999 
+        else:
+            return 0              
+                
 
     patient_id = st.text_input("Patient Identifier", key="ihd_id", value="001")
     date = st.date_input(
@@ -57,8 +69,7 @@ def adequacy_page():
     NHDWK = st.number_input(
         "Number of Hemodialysis sessions per week",
         min_value=1,
-        max_value=3,       
-        value=2,     
+        max_value=3,               
         step=1
     )   
 
@@ -74,36 +85,31 @@ def adequacy_page():
         "Pre-dialysis Body Weight (kg)",
         min_value=20,
         max_value=140,            
-        step=1,
-        value=20,
+        step=1,        
     )                       
     BWT = st.number_input(
         "Post-dialysis Body weight (kg)",
         min_value=20,
-        max_value=140,
-        value=20,            
+        max_value=140,             
         step=1
     )
     T = st.number_input(
         "Session length (min)",
         key="idh_time",
         min_value=60,
-        max_value=480,  
-        value=240,          
+        max_value=480,          
         step=1
     )  
     QB = st.number_input(
         "Blood Flow Rate (ml/min)",
         min_value=100,
-        max_value=400,            
-        value=100,
+        max_value=400,                    
         step=1
     )
     HDFPRE = st.number_input(
         "Pre-dilution infusion rate (ml/min)",
         min_value=0,
-        max_value=250, 
-        value=200,           
+        max_value=250,     
         step=1
     )
    
@@ -111,59 +117,57 @@ def adequacy_page():
         "Post-dilution infusion rate (ml/min)",
         min_value=0,
         max_value=150,            
-        step=1,
-        value=100        
+        step=1,        
     )   
     QD = st.number_input(
         "Dialysate flow rate (ml/min)",
         min_value=300,
         max_value=800,            
-        value=300,
         step=1
     )
     KOAvitro = st.number_input(
         "Dialyzer Urea KoA in vitro (KoA_vitro, ml/min)",
         min_value=600,
-        max_value=2000, 
-        value=600,           
+        max_value=2000,         
         step=1
     )   
     C0 = st.number_input(
         "Pre-dialysis Serum Urea Nitrogen (C0, mg/dl)",
         min_value=20,
         max_value=200,            
-        step=1,
-        value=20
+        step=1,        
     )
     CT = st.number_input(
         "Post-dialysis Serum Urea Nitrogen (CT, mg/dl)",
         min_value=5,
         max_value=150,            
-        step=1,
-        value=5
-    )   
-    KRUw = st.number_input(
-        "Renal urea clearance in serum water conc. (KRU, ml/min : 0-7, 999 if urine)",
-        min_value=0,
-        max_value=7,            
-        value=0,
         step=1
-    )
+    )  
+       
     UO = st.number_input(
         "Urinary Output (UO, ml/24 h)",
         min_value=0,
-        max_value=4000, 
-        value=500,           
+        max_value=4000,  
+        value=0,      
         step=1
     )   
     UUN = st.number_input(
         "Urinary Urea Nitrogen (UUN, mg/dl)",
         min_value=0,
-        max_value=1000,            
-        step=1,
-        value=500        
-    )                
+        max_value=1000,
+        value=0,
+        step=1,         
+    ) 
+    KRUw = st.number_input(
+        "Renal urea clearance in serum water conc. (KRU, ml/min : 0-7, 999 if urine)",
+        min_value=KRU_min(),
+        max_value=KRU_max(),            
+        value=KRU_value(),
+        step=1
+    )
    
+
+    
     ihd_button = st.button(key="ihd", label="Calculate")
     
     if ihd_button:
@@ -178,7 +182,7 @@ def adequacy_page():
 
                 for key,value in results.items():
                     if isinstance(value, float):
-                        results[key]=round(value,1) 
+                        results[key]=round(value,2) 
                     elif isinstance(value,datetime.datetime):
                         results[key] = value.strftime("%d/%m/%Y")
                 
