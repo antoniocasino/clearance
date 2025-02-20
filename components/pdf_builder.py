@@ -1,4 +1,4 @@
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
@@ -21,7 +21,7 @@ def create_vertical_table(data):
     ]))
     return table
 
-def create_pdf(form_data):
+def create_pdf(input_data,output_data,pageBreak=False):
     pdf_buffer = BytesIO()        
     doc = SimpleDocTemplate(pdf_buffer, pagesize=A4)
     elements = []
@@ -31,27 +31,25 @@ def create_pdf(form_data):
 
     elements.append(Paragraph("Input Data", style_heading))
     elements.append(Spacer(1, 0.5*inch))
-
-    count = 0
+    
     patient_data1 = []
-    for key, value in form_data.items():
-        if count < len(form_data) - 2:  # Exclude the last two items
-            patient_data1.append([key, value])
-        count += 1  
+    for key, value in input_data.items():       
+        patient_data1.append([key, value])
+        
     table1 = create_vertical_table(patient_data1)
     elements.append(table1)
     elements.append(Spacer(1, 0.5*inch)) 
    
+    if pageBreak:
+        elements.append(PageBreak())
     elements.append(Paragraph("Output Data", style_heading))
     elements.append(Spacer(1, 0.5*inch))
-    patient_and_last_two_items = []
+    patient_outputs = []
     count = 0
-    for key, value in form_data.items():
-        if count == 0 or count >= len(form_data) - 2:
-           patient_and_last_two_items.append([key, value])
-        count += 1
-    table2 = create_vertical_table(patient_and_last_two_items)    
+    for key, value in output_data.items():        
+        patient_outputs.append([key, value])        
     
+    table2 = create_vertical_table(patient_outputs)        
     elements.append(table2)
     elements.append(Spacer(1, 0.2*inch)) 
     doc.build(elements)

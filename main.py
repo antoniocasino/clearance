@@ -5,7 +5,7 @@ from components.kdn_calculator import calculate_kdn_qbwn
 from pages.clearance import clearance_page 
 from pages.home import home_page
 from pages.koa import koa_page
-from pages.ihd import adequacy_page
+from pages.adequacy import adequacy_page
 
 def main():
     st.set_page_config(page_title="Clearance Calculator")            

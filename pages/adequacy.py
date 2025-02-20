@@ -176,6 +176,12 @@ def adequacy_page():
             if isinstance(results, dict):
                 st.header("Output Data")
 
+                for key,value in results.items():
+                    if isinstance(value, float):
+                        results[key]=round(value,1) 
+                    elif isinstance(value,datetime.datetime):
+                        results[key] = value.strftime("%d/%m/%Y")
+                
                 col1, col2 = st.columns([8,1])
                 with col1:
                     st.markdown(f"<span class='font-bigger'>Kd tot (ml/min)</span>" , unsafe_allow_html=True)
@@ -195,20 +201,20 @@ def adequacy_page():
                     st.markdown("<br/>", unsafe_allow_html=True)                         
                                     
                 with col2: 
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['KTOT'], 1)}</strong></span>", unsafe_allow_html=True)
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['SPKTV'], 1)}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['EKTV'], 1)}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['VDP'], 1)}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['Kru'], 1)}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['KR35'], 1)}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['EKR35'], 1)}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['KTOT']}</strong></span>", unsafe_allow_html=True)
+                    st.markdown(f" <span class='font-bigger'><strong>{results['SPKTV']}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV']}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['VDP']}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['Kru']}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['KR35']}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['EKR35']}</strong></span>", unsafe_allow_html=True)   
                     st.markdown(f" <span class='font-bigger'><strong>{results['AdeqEKR']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['STDKTV'], 1)}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['STDKTV']}</strong></span>", unsafe_allow_html=True)   
                     st.markdown(f" <span class='font-bigger'><strong>{results['AdeqStdKTV']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['UFR'], 1)}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['UFR']}</strong></span>", unsafe_allow_html=True)   
                     st.markdown(f" <span class='font-bigger'><strong>{results['AdeqUFR']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['TDN'], 1)}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['PCRn'], 1)}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['TDN']}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['PCRn']}</strong></span>", unsafe_allow_html=True)   
                 
                 st.header("eKt/V needed to achieve adequacy on 1, 2, or 3 sessions per week")    
                 col3, col4 = st.columns([8,1])
@@ -221,13 +227,31 @@ def adequacy_page():
                     st.markdown(f"<span class='font-bigger'>to get stdKt/V=2.3 on 3HD/wk </span>" , unsafe_allow_html=True)                
                 
                 with col4: 
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['EKTV_1HDwk_EKRVTM'], 1)}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['EKTV_2HDwk_EKRVTM'], 1)}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['EKTV_3HDwk_EKRVTM'], 1)}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['EKTV_1HDwk_STDKTV'], 1)}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['EKTV_2HDwk_STDKTV'], 1)}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{round(results['EKTV_3HDwk_STDKTV'], 1)}</strong></span>", unsafe_allow_html=True)   
-                    
+                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV_1HDwk_EKRVTM']}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV_2HDwk_EKRVTM']}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV_3HDwk_EKRVTM']}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV_1HDwk_STDKTV']}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV_2HDwk_STDKTV']}</strong></span>", unsafe_allow_html=True)   
+                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV_3HDwk_STDKTV']}</strong></span>", unsafe_allow_html=True)   
+               
+
+                pdf = create_pdf(
+                    input_data ={
+                    "PTID":patient_id,"LABDATE":date, "NHDWK":NHDWK, "PIDI":PIDI, 
+                    "BW0":BW0,"BWT":BWT,"T":T,"QB":QB,"HDFPRE":HDFPRE,
+                    "HDFPOST":HDFPOST, "QD":QD,"KOAvitro":KOAvitro,
+                    "C0":C0,"CT":CT,"KRUw":KRUw, "UO":UO,"UUN":UUN},
+                    output_data=results,
+                    pageBreak=True
+                )
+
+                # Provide download button
+                st.download_button(
+                    label="Download PDF",
+                    data=pdf,
+                    file_name=f"{patient_id}_{date}-adequacy.pdf",
+                    mime="application/pdf"
+                )                    
             else:
                 st.write(results)  # Print the error message
                                    

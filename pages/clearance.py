@@ -103,12 +103,14 @@ def clearance_page():
                 if results["qbn"] > 400:
                     st.error("""Blood flow requirement too high. It is recommended to increase KOA and/or reduce eKt/V""")
                 
-                pdf = create_pdf({
+                pdf = create_pdf(
+                    input_data={
                     "Patient id":patient_id,"Date":date.strftime("%d/%m/%Y"),"Patient's urea volume (L)":vdp, "Expected intradialysis weight loss (L)":uf, 
                     "In vitro KOA of the dialyzer":koavitro, "HDFPRE (ml/min)":hdfpre, "HDFPOST (ml/min)":hdfpost,
                     "Diaysate Flow rate (ml/min) ":qd, "Session length (min)":t, 
-                    "eKt/V target":ekvt,"Dialyzer urea clearance needed (ml/min)":round(results["kdn"], 1),"Blood flow rate needed": round(results["qbn"], 1)
-                })
+                    "eKt/V target":ekvt},
+                    output_data={"Dialyzer urea clearance needed (ml/min)":round(results["kdn"], 1),"Blood flow rate needed": round(results["qbn"], 1)}
+                )
 
                 # Provide download button
                 st.download_button(
