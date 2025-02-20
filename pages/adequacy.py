@@ -2,6 +2,7 @@ import streamlit as st
 import datetime
 from components.ihd_calculator import calculate_ihd
 from components.pdf_builder import create_pdf
+import pandas as pd
 
 def adequacy_page():    
     st.title("Prescription of incremental HD based on urea kinetics") 
@@ -186,58 +187,54 @@ def adequacy_page():
                     elif isinstance(value,datetime.datetime):
                         results[key] = value.strftime("%d/%m/%Y")
                 
-                col1, col2 = st.columns([8,1])
-                with col1:
-                    st.markdown(f"<span class='font-bigger'>Kd tot (ml/min)</span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>spKt/V </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>eKt/V (ml/min) </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>Vdp (L) (ml/min) </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>Kru (ml/min) </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>KR35 (ml/min per 35 L V) </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>EKR35 (ml/min per 35 L V) </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>Adequacy based EKR35 ≥ minimum variable target (10 -1.5 KR35) </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>StdKt/V (v/wk)</span>" , unsafe_allow_html=True)                
-                    st.markdown(f"<span class='font-bigger'>Adequacy based on StdKt/V≥2.1 v/wk </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>Hourly Ultrafiltration rate per kg of postdialysis Body weight (ml/h per kg) </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>Adequacy based on UF ≤ 13 ml/h per kg </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>Duration of HD session needed to achieve UFR =13 ml/h per kg  (min) </span>" , unsafe_allow_html=True)                
-                    st.markdown(f"<span class='font-bigger'>PCRn </span>" , unsafe_allow_html=True)                                
-                    st.markdown("<br/>", unsafe_allow_html=True)                         
-                                    
-                with col2: 
-                    st.markdown(f" <span class='font-bigger'><strong>{results['KTOT']}</strong></span>", unsafe_allow_html=True)
-                    st.markdown(f" <span class='font-bigger'><strong>{results['SPKTV']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['VDP']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['Kru']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['KR35']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['EKR35']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['AdeqEKR']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['STDKTV']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['AdeqStdKTV']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['UFR']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['AdeqUFR']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['TDN']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['PCRn']}</strong></span>", unsafe_allow_html=True)   
-                
+                def format_float(val):
+                    if isinstance(val, float):
+                        return f"{val:.2f}"  # Format to 2 decimal place
+                    return val
+
+                output_data = {
+                    '#': [1,2,3,4,5,6,7,8,9,10,11,12,13,14],
+                    'Output': ["Kd tot","spKt/V","eKt/V",
+                               "Vdp (L)","Kru","KR35",
+                               "EKR35","Adequacy based EKR35 ≥ minimum variable target (10 -1.5 KR35)","StdKt/V",
+                               "Adequacy based on StdKt/V≥2.1 v/wk ","Hourly Ultrafiltration rate per kg of postdialysis Body weight ",
+                               "Adequacy based on UF ≤ 13 ml/h per kg ",
+                               "Duration of HD session needed to achieve UFR =13 ml/h per kg  (min)",
+                               "PCRn"],                    
+                    'Units': ["ml/min","","ml/min",
+                              "ml/min","ml/min","ml/min",
+                              "ml/min","","v/wk",
+                              "","(ml/h per kg)","",
+                              "min",""],                    
+                    'Result': [results['KTOT'],results['SPKTV'],results['EKTV'],
+                               results['VDP'],results['Kru'],results['KR35'],
+                               results['EKR35'],results['AdeqEKR'],results['STDKTV'],
+                               results['AdeqStdKTV'],results['UFR'],results['AdeqUFR'],
+                               results['TDN'],results['PCRn']
+                            ]
+                }
+                df_output = pd.DataFrame(output_data)                
+                st.dataframe(df_output.style.format(format_float).set_table_styles([{'selector': 'table', 'props': [('width', '40rem')]}]),hide_index=True) # Set the table width to 100%                
+
+                                                                                       
                 st.header("eKt/V needed to achieve adequacy on 1, 2, or 3 sessions per week")    
-                col3, col4 = st.columns([8,1])
-                with col3:
-                    st.markdown(f"<span class='font-bigger'>to get EKRU35=12-Krun on 1HD/wk </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>to get EKRU35=12-Krun on 2HD/wk </span>" , unsafe_allow_html=True)                
-                    st.markdown(f"<span class='font-bigger'>to get EKRU35=12-Krun on 3HD/wk </span>" , unsafe_allow_html=True)                
-                    st.markdown(f"<span class='font-bigger'>to get stdKt/V=2.3 on 1HD/wk </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>to get stdKt/V=2.3 on 2HD/wk </span>" , unsafe_allow_html=True)                
-                    st.markdown(f"<span class='font-bigger'>to get stdKt/V=2.3 on 3HD/wk </span>" , unsafe_allow_html=True)                
+                prescription_data = {
+                    '#': [1,2,3,4,5,6],
+                    'Output': ["to get EKRU35=12-Krun on 1HD/wk",
+                               "to get EKRU35=12-Krun on 2HD/wk",
+                               "to get EKRU35=12-Krun on 3HD/wk",
+                               "to get stdKt/V=2.3 on 1HD/wk",
+                               "to get stdKt/V=2.3 on 2HD/wk",
+                               "to get stdKt/V=2.3 on 3HD/wk",
+                            ],                                                  
+                    'Result': [results['EKTV_1HDwk_EKRVTM'],results['EKTV_2HDwk_EKRVTM'],
+                               results['EKTV_3HDwk_EKRVTM'],results['EKTV_1HDwk_STDKTV'],                               
+                               results['EKTV_2HDwk_STDKTV'],results['EKTV_3HDwk_STDKTV']                               
+                            ]
+                }
+                df_prescription = pd.DataFrame(prescription_data)                
+                st.dataframe(df_prescription.style.format(format_float).set_table_styles([{'selector': 'table', 'props': [('width', '40rem')]}]),hide_index=True) # Set the table width to 100%                
                 
-                with col4: 
-                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV_1HDwk_EKRVTM']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV_2HDwk_EKRVTM']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV_3HDwk_EKRVTM']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV_1HDwk_STDKTV']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV_2HDwk_STDKTV']}</strong></span>", unsafe_allow_html=True)   
-                    st.markdown(f" <span class='font-bigger'><strong>{results['EKTV_3HDwk_STDKTV']}</strong></span>", unsafe_allow_html=True)   
-               
 
                 pdf = create_pdf(
                     input_data ={

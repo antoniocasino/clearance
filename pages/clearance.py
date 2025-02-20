@@ -1,5 +1,6 @@
 import streamlit as st
 import datetime
+import pandas as pd
 from components.kdn_calculator import calculate_kdn_qbwn
 from components.pdf_builder import create_pdf
 
@@ -103,13 +104,14 @@ def clearance_page():
                     if isinstance(value, float):
                         results[key]=round(value,2) 
 
-                col1, col2 = st.columns([8,1])
-                with col1:
-                    st.markdown(f"<span class='font-bigger'>Dialyzer urea clearance needed (ml/min) </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>Blood flow rate needed (ml/min) </span>", unsafe_allow_html=True)
-                with col2:
-                    st.markdown(f"<span class='font-bigger'><strong>{results['kdn']}</strong></span>", unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'><strong>{results['qbn']}</strong></span>", unsafe_allow_html=True)
+                input_data = {
+                    '#': [1, 2],
+                    'Output': ["Dialyzer urea clearance needed","Blood flow rate needed "],                    
+                    'Units': ["ml/min","ml/min"],                    
+                    'Result': [round(results['kdn'], 1),round(results['qbn'], 1)]
+                }
+                df_input = pd.DataFrame(input_data)                
+                st.dataframe(df_input,hide_index=True)       
 
                 if results["qbn"] > 400:
                     st.error("""Blood flow requirement too high. It is recommended to increase KOA and/or reduce eKt/V""")

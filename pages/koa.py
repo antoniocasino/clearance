@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from components.koa_calculator import koa
 def koa_page():    
     st.title("Dialyzer's characteristics (KoA)") 
@@ -47,14 +48,14 @@ def koa_page():
     if koa_button:
         with st.spinner("Extracting... it takes time..."): 
     
-            kdif_result, koa_result = koa(qb=qb,qd=qd,qf=qf,kd=kd)
-            col1, col2 = st.columns([8,1])               
+            kdif_result, koa_result = koa(qb=qb,qd=qd,qf=qf,kd=kd)           
 
             if kdif_result is not None and koa_result is not None:
-                with col1:
-                    st.markdown(f"<span class='font-bigger'>Diffusive Kd  (ml/min) </span>" , unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'>KoA of the dialyzer in vitro  (ml/min)</span>" , unsafe_allow_html=True)
-                with col2:
-                    st.markdown(f"<span class='font-bigger'><strong>{round(kdif_result, 1)}</strong></span>", unsafe_allow_html=True)
-                    st.markdown(f"<span class='font-bigger'><strong>{round(koa_result, 1)}</strong></span>", unsafe_allow_html=True)
-                
+                input_data = {
+                    '#': [1, 2],
+                    'Output': ["Diffusive Kd","KoA of the dialyzer in vitro"],                    
+                    'Units': ["ml/min","ml/min"],                    
+                    'Result': [round(kdif_result, 1),round(koa_result, 1)]
+                }
+                df_input = pd.DataFrame(input_data)                
+                st.dataframe(df_input,hide_index=True)                 
