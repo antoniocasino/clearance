@@ -98,8 +98,19 @@ def clearance_page():
             results = calculate_kdn_qbwn(vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt)            
             
             if isinstance(results, dict):
-                st.markdown(f"<span class='font-bigger'>Dialyzer urea clearance needed (ml/min) <strong>{round(results['kdn'], 1)}</strong></span>" , unsafe_allow_html=True)
-                st.markdown(f"<span class='font-bigger'>Blood flow rate needed (ml/min) <strong>{round(results['qbn'], 1)}</strong></span>", unsafe_allow_html=True)
+                
+                for key,value in results.items():
+                    if isinstance(value, float):
+                        results[key]=round(value,2) 
+
+                col1, col2 = st.columns([8,1])
+                with col1:
+                    st.markdown(f"<span class='font-bigger'>Dialyzer urea clearance needed (ml/min) </span>" , unsafe_allow_html=True)
+                    st.markdown(f"<span class='font-bigger'>Blood flow rate needed (ml/min) </span>", unsafe_allow_html=True)
+                with col2:
+                    st.markdown(f"<span class='font-bigger'><strong>{results['kdn']}</strong></span>", unsafe_allow_html=True)
+                    st.markdown(f"<span class='font-bigger'><strong>{results['qbn']}</strong></span>", unsafe_allow_html=True)
+
                 if results["qbn"] > 400:
                     st.error("""Blood flow requirement too high. It is recommended to increase KOA and/or reduce eKt/V""")
                 
