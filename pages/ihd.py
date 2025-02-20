@@ -55,7 +55,7 @@ def adequacy_page():
         format="DD/MM/YYYY",
     )
     NHDWK = st.number_input(
-        "Number of Hemodialysis sessions per week (NHDWK: 1, 2, or 3)",
+        "Number of Hemodialysis sessions per week",
         min_value=1,
         max_value=3,       
         value=2,     
@@ -71,14 +71,14 @@ def adequacy_page():
     )  
     
     BW0 = st.number_input(
-        "Pre-dialysis Body Weight (kg: 20-140)",
+        "Pre-dialysis Body Weight (kg)",
         min_value=20,
         max_value=140,            
         step=1,
         value=20,
     )                       
     BWT = st.number_input(
-        "Post-dialysis Body weight (kg: 20,140)",
+        "Post-dialysis Body weight (kg)",
         min_value=20,
         max_value=140,
         value=20,            
@@ -93,14 +93,14 @@ def adequacy_page():
         step=1
     )  
     QB = st.number_input(
-        "Blood Flow Rate (ml/min: 100-400)",
+        "Blood Flow Rate (ml/min)",
         min_value=100,
         max_value=400,            
         value=100,
         step=1
     )
     HDFPRE = st.number_input(
-        "Pre-dilution infusion rate (ml/min: 0-250)",
+        "Pre-dilution infusion rate (ml/min)",
         min_value=0,
         max_value=250, 
         value=200,           
@@ -108,35 +108,35 @@ def adequacy_page():
     )
    
     HDFPOST = st.number_input(
-        "Post-dilution infusion rate (ml/min: 0:150)",
+        "Post-dilution infusion rate (ml/min)",
         min_value=0,
         max_value=150,            
         step=1,
         value=100        
     )   
     QD = st.number_input(
-        "Dialysate flow rate (ml/min: 300-800)",
+        "Dialysate flow rate (ml/min)",
         min_value=300,
         max_value=800,            
         value=300,
         step=1
     )
     KOAvitro = st.number_input(
-        "Dialyzer Urea KoA in vitro (KoA_vitro, ml/min: 600 -2000)",
+        "Dialyzer Urea KoA in vitro (KoA_vitro, ml/min)",
         min_value=600,
         max_value=2000, 
         value=600,           
         step=1
     )   
     C0 = st.number_input(
-        "Pre-dialysis Serum Urea Nitrogen (C0, mg/dl: 20-200)",
+        "Pre-dialysis Serum Urea Nitrogen (C0, mg/dl)",
         min_value=20,
         max_value=200,            
         step=1,
         value=20
     )
     CT = st.number_input(
-        "Post-dialysis Serum Urea Nitrogen (CT, mg/dl: 5-150)",
+        "Post-dialysis Serum Urea Nitrogen (CT, mg/dl)",
         min_value=5,
         max_value=150,            
         step=1,
@@ -150,14 +150,14 @@ def adequacy_page():
         step=1
     )
     UO = st.number_input(
-        "Urinary Output (UO, ml/24 h: 0-4000)",
+        "Urinary Output (UO, ml/24 h)",
         min_value=0,
         max_value=4000, 
         value=500,           
         step=1
     )   
     UUN = st.number_input(
-        "Urinary Urea Nitrogen (UUN, mg/dl: 0-1000)",
+        "Urinary Urea Nitrogen (UUN, mg/dl)",
         min_value=0,
         max_value=1000,            
         step=1,
