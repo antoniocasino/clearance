@@ -127,26 +127,26 @@ def adequacy_page():
         step=1
     )
     KOAvitro = st.number_input(
-        "Dialyzer Urea KoA in vitro (KoA_vitro, ml/min)",
+        "Dialyzer Urea KoA in vitro (ml/min)",
         min_value=600,
         max_value=2000,         
         step=1
     )   
     C0 = st.number_input(
-        "Pre-dialysis Serum Urea Nitrogen (C0, mg/dl)",
+        "Pre-dialysis Serum Urea Nitrogen (mg/dl)",
         min_value=20,
         max_value=200,            
         step=1,        
     )
     CT = st.number_input(
-        "Post-dialysis Serum Urea Nitrogen (CT, mg/dl)",
+        "Post-dialysis Serum Urea Nitrogen (mg/dl)",
         min_value=5,
         max_value=150,            
         step=1
     )  
        
     UO = st.number_input(
-        "Urinary Output (UO, ml/24 h)",
+        "Urinary Output ( ml/24 h)",
         min_value=0,
         max_value=4000,  
         value=0,      
@@ -160,7 +160,7 @@ def adequacy_page():
         step=1,         
     ) 
     KRUw = st.number_input(
-        "Renal urea clearance in serum water conc. (KRU, ml/min : 0-7, 999 if urine)",
+        "Renal urea clearance in serum water conc. (ml/min)",
         min_value=KRU_min(),
         max_value=KRU_max(),            
         value=KRU_value(),
