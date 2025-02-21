@@ -16,36 +16,38 @@ def koa_page():
         """,
         unsafe_allow_html=True
     )   
-    
-    qb = st.number_input(
-        "Blood flow rate (ml/min)",           
-        value=300,
-        min_value=100,
-        max_value=450,
-        step=1        
-    )
-    qd = st.number_input(
-        "Dialysate flow rate (ml/min)",              
-        value=500,    
-        max_value=500,    
-        step=1        
-    )
-    qf = st.number_input(
-        "Ultrafiltration rate (ml/min)",        
-        value=10,
-        max_value=10,     
-        step=1        
-    )
-    kd = st.number_input(
-        "Dialyzer Urea clearance (ml/min)",            
-        value=250,
-        max_value=250,
-        step=1        
-    )
+    with st.form("koa_form"):
+        qb = st.number_input(
+            "Blood flow rate (ml/min)",                       
+            min_value=100,
+            max_value=450,
+            step=1        
+        )
+        qd = st.number_input(
+            "Dialysate flow rate (ml/min)",                          
+            max_value=500,    
+            step=1        
+        )
+        qf = st.number_input(
+            "Ultrafiltration rate (ml/min)",                    
+            max_value=10,     
+            step=1        
+        )
+        kd = st.number_input(
+            "Dialyzer Urea clearance (ml/min)",            
+            value=250,
+            max_value=250,
+            step=1        
+        )
+        col1, col2 = st.columns([1,1]) # to arrange buttons horizontally
+        with col1:
+            submit = st.form_submit_button("Submit")
+        with col2:
+            reset = st.form_submit_button("Reset", on_click=lambda: st.session_state.clear()) 
+   
+    #koa_button = st.button(key="koa", label="Calculate")
 
-    koa_button = st.button(key="koa", label="Calculate")
-
-    if koa_button:
+    if submit:
         with st.spinner("Extracting... it takes time..."): 
     
             kdif_result, koa_result = koa(qb=qb,qd=qd,qf=qf,kd=kd)           

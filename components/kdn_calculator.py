@@ -34,8 +34,8 @@ def calculate_kdn_qbwn( vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt):
         return "Error: HDFPRE must be between 0 and 250."
     if not (0 <= hdfpost <= 150):
         return "Error: HDFPOST must be between 0 and 150."
-    if not (300 <= qd <= 800):
-        return "Error: QD must be between 300 and 800."
+    if not (301 <= qd <= 800):
+        return "Error: QD must be between 301 and 800."
     if not (60 <= t <= 480):
         return "Error: T must be between 60 and 480."
     if not (0.3 <= ekvt <= 2.0):
@@ -63,7 +63,7 @@ def calculate_kdn_qbwn( vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt):
     qbw = 300
 
     for _ in range(10):
-        ez = math.exp(koa / qbw * (1 - qbw / qd))
+        ez = math.exp(koa / qbw * (1 - qbw / qd))        
         kdif = qbw * (ez - 1) / (ez - qbw / qd)
         kconv = (qbw - kdif) / qbw * (qf + hdfpre + hdfpost)
         dilution_factor = (qbw - hdfpre) / qbw

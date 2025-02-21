@@ -19,81 +19,87 @@ def clearance_page():
             .font-bigger{
                 font-size: 20px
             }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )      
+            .stFormSubmitButton > button {
+                font-size: 20px;                
+                color: black;
+                margin: 0 auto;
+                height: 2rem;
+                width: 10rem;
+            }    
+            </style>
+                """,
+                unsafe_allow_html=True
+            )      
+
+    with st.form("clearance_form"):
         
-    patient_id = st.text_input("Patient Identifier", key="id", value="001")
-    date = st.date_input(
-        "Select a date (dd/mm/yyyy)",
-        value=datetime.datetime.now(),
-        format="DD/MM/YYYY",
-    )
-    vdp = st.number_input(
-        "Patient's urea volume (L)",
-        min_value=20,
-        max_value=50,       
-        value=35,     
-        step=1
-    )
-    uf = st.number_input(
-        "Expected intradialysis weight loss (L)",
-        min_value=0.1,
-        max_value=5.0,            
-        step=0.1,
-        value=2.0,
-        format="%.1f"
-    )  
+        patient_id = st.text_input("Patient Identifier", key="id", value="001")
+        date = st.date_input(
+            "Select a date (dd/mm/yyyy)",
+            value=datetime.datetime.now(),
+            format="DD/MM/YYYY",
+        )
+        vdp = st.number_input(
+            "Patient's urea volume (L)",
+            min_value=20,
+            max_value=50,                        
+            step=1
+        )
+        uf = st.number_input(
+            "Expected intradialysis weight loss (L)",
+            min_value=0.1,
+            max_value=5.0,            
+            step=0.1,            
+            format="%.1f"
+        )  
+        
+        koavitro = st.number_input(
+            "In vitro KOA of the dialyzer (ml/min)",
+            min_value=600,
+            max_value=2000,            
+            step=1,            
+        )                       
+        hdfpre = st.number_input(
+            "HDFPRE (ml/min)",
+            min_value=0,
+            max_value=150,            
+            step=1
+        )  
+        hdfpost = st.number_input(
+            "HDFPOST (ml/min)",
+            min_value=0,
+            max_value=150,                        
+            step=1
+        )
+        qd = st.number_input(
+            "Diaysate Flow rate (ml/min)",
+            min_value=301,
+            max_value=800,                  
+            step=1
+        )
+        t = st.number_input(
+            "Session length (min)",
+            min_value=60,
+            max_value=480,              
+            step=1
+        )
+        ekvt = st.number_input(
+            "eKt/V target",
+            min_value=0.3,
+            max_value=2.0,            
+            step=0.1,            
+            format="%.1f"
+        )   
     
-    koavitro = st.number_input(
-        "In vitro KOA of the dialyzer (ml/min)",
-        min_value=600,
-        max_value=2000,            
-        step=1,
-        value=1200,
-    )                       
-    hdfpre = st.number_input(
-        "HDFPRE (ml/min)",
-        min_value=0,
-        max_value=150,
-        value=0,            
-        step=1
-    )  
-    hdfpost = st.number_input(
-        "HDFPOST (ml/min)",
-        min_value=0,
-        max_value=150,            
-        value=0,
-        step=1
-    )
-    qd = st.number_input(
-        "Diaysate Flow rate (ml/min)",
-        min_value=300,
-        max_value=800, 
-        value=500,           
-        step=1
-    )
-    t = st.number_input(
-        "Session length (min)",
-        min_value=60,
-        max_value=480,  
-        value=240,          
-        step=1
-    )
-    ekvt = st.number_input(
-        "eKt/V target",
-        min_value=0.3,
-        max_value=2.0,            
-        step=0.1,
-        value=1.4,
-        format="%.1f"
-    )   
-                   
+        col1, col2 = st.columns([1,1]) # to arrange buttons horizontally
+        with col1:
+            submit = st.form_submit_button("Submit")
+        with col2:
+            reset = st.form_submit_button("Reset", on_click=lambda: st.session_state.clear()) 
    
-    clearnace_button = st.button(key="clearance", label="Calculate")
-    
-    if clearnace_button:
+        #clearnace_button = st.button(key="clearance", label="Calculate")
+        
+    if submit:
         with st.spinner("Extracting... it takes time..."):            
 
             results = calculate_kdn_qbwn(vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt)            
@@ -122,7 +128,7 @@ def clearance_page():
                     "In vitro KOA of the dialyzer":koavitro, "HDFPRE (ml/min)":hdfpre, "HDFPOST (ml/min)":hdfpost,
                     "Diaysate Flow rate (ml/min) ":qd, "Session length (min)":t, 
                     "eKt/V target":ekvt},
-                    output_data={"Dialyzer urea clearance needed (ml/min)":round(results["kdn"], 1),"Blood flow rate needed": round(results["qbn"], 1)}
+                    output_data={"Patient id":patient_id,"Dialyzer urea clearance needed (ml/min)":round(results["kdn"], 1),"Blood flow rate needed": round(results["qbn"], 1)}
                 )
 
                 # Provide download button
@@ -134,4 +140,4 @@ def clearance_page():
                 )
             else:
                 st.write(results)  # Print the error message
-                                   
+                                    
