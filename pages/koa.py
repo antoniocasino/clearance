@@ -20,23 +20,26 @@ def koa_page():
         qb = st.number_input(
             "Blood flow rate (ml/min)",                       
             min_value=100,
-            max_value=450,
+            max_value=300,
             step=1        
         )
         qd = st.number_input(
-            "Dialysate flow rate (ml/min)",                          
-            max_value=500,    
+            "Dialysate flow rate (ml/min)", 
+            min_value=100,                         
+            max_value=1000,    
             step=1        
         )
         qf = st.number_input(
             "Ultrafiltration rate (ml/min)",                    
-            max_value=10,     
+            min_value=0,                         
+            max_value=30,     
             step=1        
         )
         kd = st.number_input(
             "Dialyzer Urea clearance (ml/min)",            
             value=250,
-            max_value=250,
+            min_value=100,
+            max_value=350,
             step=1        
         )
         col1, col2 = st.columns([1,1]) # to arrange buttons horizontally
