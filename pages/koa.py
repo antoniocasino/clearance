@@ -6,11 +6,7 @@ def koa_page():
     st.markdown("""
          <style>
             [data-testid="stWidgetLabel"] > div {
-                font-size: 20px;
-            }            
-            [data-baseweb="base-input"] > input{
-                font-size: 24px !important;
-                height: 40px !important;
+                font-size: 16px;
             }
         </style>
         """,

@@ -10,7 +10,7 @@ def adequacy_page():
         <style>
             [data-testid="stWidgetLabel"] > div {
                 height: 40px !important;
-                font-size: 20px;
+                font-size: 16px;
             }
             [data-testid="stNumberInputField"] {
                 font-size: 24px !important;
@@ -20,11 +20,11 @@ def adequacy_page():
                 font-size: 20px;
             }
             .stFormSubmitButton > button {
-                font-size: 20px;                
+                font-size: 16px;                
                 color: black;
                 margin: 0 auto;
                 height: 2rem;
-                width: 10rem;
+                width: 12rem;
             }           
         </style>
         """,
