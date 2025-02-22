@@ -65,7 +65,7 @@ def adequacy_page():
         if UO and UUN and UO >0 and UUN >0:
             return 999 
         else:
-            return 0              
+            return None              
                 
     with st.form("adequacye_form"):
         patient_id = st.text_input(
@@ -78,7 +78,7 @@ def adequacy_page():
             format="DD/MM/YYYY",
         )
         NHDWK = st.number_input(
-            "Number of Hemodialysis sessions per week",
+            "Number of Hemodialysis sessions per week (1, 2, or 3)",
             min_value=1,
             max_value=3,
             value=None,
@@ -86,7 +86,7 @@ def adequacy_page():
         )   
 
         PIDI = st.number_input(
-            "Preceding inter-dialytic interval",
+            "Preceding inter-dialytic interval (days: 2, 3, 4, or 7)",
             min_value=PIDI_min(),
             max_value=PIDI_max(),
             step=1,
@@ -184,7 +184,7 @@ def adequacy_page():
             "Renal urea clearance in serum water conc. (ml/min)",
             min_value=KRU_min(),
             max_value=KRU_max(),            
-            value=None,
+            value=KRU_value(),
             step=1
         )
         col1, col2 = st.columns([1,1]) # to arrange buttons horizontally
