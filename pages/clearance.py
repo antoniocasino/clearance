@@ -33,22 +33,26 @@ def clearance_page():
 
     with st.form("clearance_form"):
         
-        patient_id = st.text_input("Patient Identifier", key="id", value="001")
+        patient_id = st.text_input("Patient Identifier",
+                                    key="id",
+                                    value=None,)
         date = st.date_input(
-            "Select a date (dd/mm/yyyy)",
-            value=datetime.datetime.now(),
+            "Select a date (dd/mm/yyyy)",            
             format="DD/MM/YYYY",
+            value=None,
         )
         vdp = st.number_input(
             "Patient's urea volume (L)",
             min_value=20,
-            max_value=50,                        
+            max_value=50,
+            value=None,
             step=1
         )
         uf = st.number_input(
             "Expected intradialysis weight loss (L)",
             min_value=0.1,
-            max_value=5.0,            
+            max_value=5.0,
+            value=None,
             step=0.1,            
             format="%.1f"
         )  
@@ -56,37 +60,43 @@ def clearance_page():
         koavitro = st.number_input(
             "In vitro KOA of the dialyzer (ml/min)",
             min_value=600,
-            max_value=2000,            
+            max_value=2000,
+            value=None,
             step=1,            
         )                       
         hdfpre = st.number_input(
             "HDFPRE (ml/min)",
             min_value=0,
-            max_value=150,            
+            max_value=150,
+            value=None,
             step=1
         )  
         hdfpost = st.number_input(
             "HDFPOST (ml/min)",
             min_value=0,
-            max_value=150,                        
+            max_value=150,
+            value=None,
             step=1
         )
         qd = st.number_input(
             "Diaysate Flow rate (ml/min)",
             min_value=301,
-            max_value=800,                  
+            max_value=800, 
+            value=None,
             step=1
         )
         t = st.number_input(
             "Session length (min)",
             min_value=60,
-            max_value=480,              
+            max_value=480,
+            value=None,
             step=1
         )
         ekvt = st.number_input(
             "eKt/V target",
             min_value=0.3,
-            max_value=2.0,            
+            max_value=2.0,
+            value=None,
             step=0.1,            
             format="%.1f"
         )   
@@ -101,43 +111,58 @@ def clearance_page():
         
     if submit:
         with st.spinner("Extracting... it takes time..."):            
-
-            results = calculate_kdn_qbwn(vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt)            
-            
-            if isinstance(results, dict):
-                
-                for key,value in results.items():
-                    if isinstance(value, float):
-                        results[key]=round(value,2) 
-
-                input_data = {
-                    '#': [1, 2],
-                    'Output': ["Dialyzer urea clearance needed","Blood flow rate needed "],                    
-                    'Units': ["ml/min","ml/min"],                    
-                    'Result': [round(results['kdn'], 1),round(results['qbn'], 1)]
-                }
-                df_input = pd.DataFrame(input_data)                
-                st.dataframe(df_input,hide_index=True)       
-
-                if results["qbn"] > 400:
-                    st.error("""Blood flow requirement too high. It is recommended to increase KOA and/or reduce eKt/V""")
-                
-                pdf = create_pdf(
-                    input_data={
-                    "Patient id":patient_id,"Date":date.strftime("%d/%m/%Y"),"Patient's urea volume (L)":vdp, "Expected intradialysis weight loss (L)":uf, 
+            validation_inputs = {
+                    "Patient id":patient_id,"Date":date,"Patient's urea volume (L)":vdp, "Expected intradialysis weight loss (L)":uf, 
                     "In vitro KOA of the dialyzer":koavitro, "HDFPRE (ml/min)":hdfpre, "HDFPOST (ml/min)":hdfpost,
                     "Diaysate Flow rate (ml/min) ":qd, "Session length (min)":t, 
-                    "eKt/V target":ekvt},
-                    output_data={"Patient id":patient_id,"Dialyzer urea clearance needed (ml/min)":round(results["kdn"], 1),"Blood flow rate needed": round(results["qbn"], 1)}
-                )
+                    "eKt/V target":ekvt}
+            
+            none_values = [key for key, value in validation_inputs.items() if value is None]  # List of input names with None values
+            if none_values:
+                ol_string = "<ul>\n"  # Start the ordered list
 
-                # Provide download button
-                st.download_button(
-                    label="Download PDF",
-                    data=pdf,
-                    file_name=f"{patient_id}_{date}_clearance_data.pdf",
-                    mime="application/pdf"
-                )
+                for item in none_values:
+                    ol_string += f"  <li>{item}</li>\n"  # Add each item as a list item
+
+                ol_string += "</ul>\n"    
+                st.markdown(f"<div style='background-color:lightgoldenrodyellow; color:#926c05;'>The following fields are missing: {ol_string}</div>",unsafe_allow_html=True)                  
             else:
-                st.write(results)  # Print the error message
-                                    
+                results = calculate_kdn_qbwn(vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt)            
+                
+                if isinstance(results, dict):
+                    
+                    for key,value in results.items():
+                        if isinstance(value, float):
+                            results[key]=round(value,2) 
+
+                    input_data = {
+                        '#': [1, 2],
+                        'Output': ["Dialyzer urea clearance needed","Blood flow rate needed "],                    
+                        'Units': ["ml/min","ml/min"],                    
+                        'Result': [round(results['kdn'], 1),round(results['qbn'], 1)]
+                    }
+                    df_input = pd.DataFrame(input_data)                
+                    st.dataframe(df_input,hide_index=True)       
+
+                    if results["qbn"] > 400:
+                        st.error("""Blood flow requirement too high. It is recommended to increase KOA and/or reduce eKt/V""")
+                    
+                    pdf = create_pdf(
+                        input_data={
+                        "Patient id":patient_id,"Date":date.strftime("%d/%m/%Y"),"Patient's urea volume (L)":vdp, "Expected intradialysis weight loss (L)":uf, 
+                        "In vitro KOA of the dialyzer":koavitro, "HDFPRE (ml/min)":hdfpre, "HDFPOST (ml/min)":hdfpost,
+                        "Diaysate Flow rate (ml/min) ":qd, "Session length (min)":t, 
+                        "eKt/V target":ekvt},
+                        output_data={"Patient id":patient_id,"Dialyzer urea clearance needed (ml/min)":round(results["kdn"], 1),"Blood flow rate needed": round(results["qbn"], 1)}
+                    )
+
+                    # Provide download button
+                    st.download_button(
+                        label="Download PDF",
+                        data=pdf,
+                        file_name=f"{patient_id}_{date}_clearance_data.pdf",
+                        mime="application/pdf"
+                    )
+                else:
+                    st.write(results)  # Print the error message
+                                        
