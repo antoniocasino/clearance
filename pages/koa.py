@@ -53,12 +53,9 @@ def koa_page():
                       "Ultrafiltration rate":qf,"Dialyzer Urea clearance":kd}
             none_values = [key for key, value in validation_inputs.items() if value is None]  # List of input names with None values
             if none_values:
-                ol_string = "<ul>\n"  # Start the ordered list
-
-                for item in none_values:
-                    ol_string += f"  <li>{item}</li>\n"  # Add each item as a list item
-
-                ol_string += "</ul>\n"    
+                ol_string = "<ul>\n"  # Start the ordered list                
+                ol_string += "".join(f"  <li>{item}</li>\n" for item in none_values)  # Add each item as a list item
+                ol_string += "</ul>\n"  
                 st.markdown(f"<div style='background-color:lightgoldenrodyellow; color:#926c05;'>The following fields are missing: {ol_string}</div>",unsafe_allow_html=True)                  
             else:
                 kdif_result, koa_result = koa(qb=qb,qd=qd,qf=qf,kd=kd)
