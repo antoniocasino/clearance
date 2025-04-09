@@ -1,6 +1,6 @@
 import streamlit as st
 import datetime
-from components.adequacy import ihd_calculation
+from components.ihd_calculator import calculate_ihd
 from components.pdf_builder import create_pdf
 import pandas as pd
 
@@ -78,7 +78,7 @@ def adequacy_page():
             format="DD/MM/YYYY",
         )
         NHDWK = st.number_input(
-            "Number of HD  sessions per week (1, 2, or 3)",
+            "Number of Hemodialysis sessions per week (1, 2, or 3)",
             min_value=1,
             max_value=3,
             value=None,
@@ -181,7 +181,7 @@ def adequacy_page():
             step=1,         
         ) 
         KRUw = st.number_input(
-            "Renal urea clearance (ml/min)",
+            "Renal urea clearance in serum water conc. (ml/min)",
             min_value=KRU_min(),
             max_value=KRU_max(),            
             value=KRU_value(),
@@ -221,7 +221,7 @@ def adequacy_page():
                                      "BW0":BW0,"BWT":BWT,"T":T,"QB":QB,"HDFPRE":HDFPRE,
                                      "HDFPOST":HDFPOST, "QD":QD,"KOAvitro":KOAvitro,
                                      "C0":C0,"CT":CT,"KRUw":KRUw, "UO":UO,"UUN":UUN} 
-                results = ihd_calculation(inputs)                              
+                results = calculate_ihd(inputs)                              
                 
                 if isinstance(results, dict):
                     st.header("Output Data")
@@ -240,62 +240,52 @@ def adequacy_page():
                         return val
 
                     output_data = {
-                        '#': [
-                              1,2,3,
-                              4,5,6,
-                              7,8,9,
-                              10,11,12,
-                              13,14,15,
-                              16,17,18
-                              ],
-                        'Output': [
-                                   "Total Dialyzer Urea Clearance",
-                                   "Single pool Kt/V",
-                                   "Equilibrated Kt/V",
-                                   "Urea distribution volume (double pool)",
-                                   "Protein catabolic rate (g/kg/day)",
-                                   "Renal urea clearance (calculated)",
-                                   "KRU normalized per V 35 l",
-                                   "Equivalent Renal Clearance per V 35 l ",
-                                   "EKRUN_variable target (10-1.5 KRUN)*",
-                                   "EKR35 ≥10 – 1.5 KRUN *",
-                                   "Standard Kt/V",
-                                   "StdKt/V ≥ 2.1",
-                                   "Ultrafiltration rate",
-                                   "UFR ≤ 13 ml/h/kg",
-                                   "TD needed for UFR=13 ml/h/kg",
-                                   "Weekly net Ultrafiltration",
-                                   "eKt/V to get EKRUN=12-KRUN",
-                                   "eKt/V to be prescribed to get stdKt/V=2.3"
-                                   ], 
-                        'Symbols':["Kd Tot","spKt/V","eKt/V",
-                                   "Vdp","PCRn","KRU",
-                                   "KRUN","EKR35","EKRU_VTM",
-                                   "Adequacy","StdKt/V","Adequacy",
-                                   "UFR","Adequacy","TDN",
-                                   "UFwk","eKt/V","eKt/V"],
-                        'Units': [
-                                "ml/min","dimensionless","dimensionless",
-                                "l","(g/kg/day)","ml/min",
-                                "ml/min per 35l V","ml/min per 35l V","ml/min per 35l V",
-                                "Yes/No","Volume/wk","Yes/No",
-                                "ml/h per kg","Yes/No","min per session",
-                                "dimensionless","dimensionless","(l)"
-                                ],                    
-                        'Result': [
-                                results['KTOT'],results['SPKTV'],results['EKTV'],                                   
-                                results['VDP'],results["PCRN"],results['Kru'],
-                                results['krun'],results['ekrun'],results['ekrun_min'],
-                                results['AdeqEKR'],results['STDKTV'],results['AdeqStdKTV'],
-                                results['UFR'],results['AdeqUFR'],results['TDN'],
-                                results["Ufwk"],results["Ektv_ekru"],results['Ektv_stdktv']
-                                ]                                 
-                    }                   
+                        '#': [1,2,3,4,5,6,7,8,9,10,11,12,13,14],
+                        'Output': ["Kd tot","spKt/V","eKt/V",
+                                "Vdp (L)","Kru","KR35",
+                                "EKR35","Adequacy based EKR35 ≥ minimum variable target (10 -1.5 KR35)","StdKt/V",
+                                "Adequacy based on StdKt/V≥2.1 v/wk ","Hourly Ultrafiltration rate per kg of postdialysis Body weight ",
+                                "Adequacy based on UF ≤ 13 ml/h per kg ",
+                                "Duration of HD session needed to achieve UFR =13 ml/h per kg",
+                                "PCRn"],                    
+                        'Units': ["ml/min","","ml/min",
+                                "ml/min","ml/min","ml/min",
+                                "ml/min","","v/wk",
+                                "","(ml/h per kg)","",
+                                "min",""],                    
+                        'Result': [results['KTOT'],results['SPKTV'],results['EKTV'],
+                                results['VDP'],results['Kru'],results['KR35'],
+                                results['EKR35'],results['AdeqEKR'],results['STDKTV'],
+                                results['AdeqStdKTV'],results['UFR'],results['AdeqUFR'],
+                                results['TDN'],results['PCRn']
+                                ]
+                    }
                     df_output = pd.DataFrame(output_data)                
                     st.dataframe(df_output.style.format(format_float), 
                                 column_config={"Output": st.column_config.Column(width="large")},
                                 hide_index=True) # Set the table width to 100%                
-                                                                                                            
+
+                                                                                        
+                    st.header("eKt/V needed to achieve adequacy on 1, 2, or 3 sessions per week")    
+                    prescription_data = {
+                        '#': [1,2,3,4,5,6],
+                        'Output': ["to get EKRU35=12-Krun on 1HD/wk",
+                                "to get EKRU35=12-Krun on 2HD/wk",
+                                "to get EKRU35=12-Krun on 3HD/wk",
+                                "to get stdKt/V=2.3 on 1HD/wk",
+                                "to get stdKt/V=2.3 on 2HD/wk",
+                                "to get stdKt/V=2.3 on 3HD/wk",
+                                ],                                                  
+                        'Result': [results['EKTV_1HDwk_EKRVTM'],results['EKTV_2HDwk_EKRVTM'],
+                                results['EKTV_3HDwk_EKRVTM'],results['EKTV_1HDwk_STDKTV'],                               
+                                results['EKTV_2HDwk_STDKTV'],results['EKTV_3HDwk_STDKTV']                               
+                                ]
+                    }
+                    df_prescription = pd.DataFrame(prescription_data)                                
+                    st.dataframe(df_prescription.style.format(format_float),
+                                column_config={"Output": st.column_config.Column(width="large")},
+                                hide_index=True) # Set the table width to 100%                
+                    
 
                     pdf = create_pdf(
                         input_data ={
@@ -311,24 +301,25 @@ def adequacy_page():
                                     "Single pool Kt/V ":results['SPKTV'],
                                     "Equilibrated Kt/V ":results['EKTV'],
                                     "Urea distribution volume (double pool)":results['VDP'],
-                                    "Protein catabolic rate (g/kg/day)":results["PCRN"],
                                     "Renal urea clearance (calculated)":results['Kru'],
-                                    "KRU normalized per V 35 l":results['krun'],
-                                    "Equivalent Renal Clearance per V 35 l ":results['ekrun'],
-                                    "EKRUN_variable target_ min = 10-1.5 KRUN":results['ekrun_min'],                                  
+                                    "KRU normalized per V 35 l ":results['KR35'],
+                                    "Equivalent Renal Clearance per V 35 l ":results['EKR35'],
                                     "EKR35 ≥10 – 1.5 KRUN *":results['AdeqEKR'],
                                     "Standard Kt/V":results['STDKTV'],
                                     "StdKt/V ≥ 2.1":results['AdeqStdKTV'],
                                     "Ultrafiltration rate ":results['UFR'],
                                     "UFR ≤ 13 ml/h/kg":results['AdeqUFR'],
                                     "TD needed for UFR=13 ml/h/kg":results['TDN'],
-                                    "Weekly net Ultrafiltration":results['Ufwk'],
-                                    "eKt/V to get EKRUN=12-KRUN ":results['Ektv_ekru'],
-                                    "eKt/V to be prescribed to get stdKt/V=2.3":results['Ektv_stdktv'],
-                                    },
+                                    "Protein Catabolic rate normalized":results['PCRn'],
+                                    "EKR35 = 12-KRUN on 1HD/wk":results['EKTV_1HDwk_EKRVTM'],
+                                    "EKR35 = 12-KRUN on 2HD/wk":results['EKTV_2HDwk_EKRVTM'],
+                                    "EKR35 = 12-KRUN on 3HD/wk":results['EKTV_3HDwk_EKRVTM'],
+                                    "stdKt/V=2.3 on 1 HD/wk":results['EKTV_1HDwk_STDKTV'],
+                                    "stdKt/V=2.3 on 2 HD/wk":results['EKTV_2HDwk_STDKTV'],
+                                    "stdKt/V=2.3 on 3 HD/wk":results['EKTV_3HDwk_STDKTV']},
                         pageBreak=True
                     )
-                   
+
                     # Provide download button
                     st.download_button(
                         label="Download PDF",
