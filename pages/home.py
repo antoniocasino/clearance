@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 def home_page():
-    st.title("Haemodialysis Prescription Calculator")
+    st.title("App EuReCa")
     st.markdown("""
          <style>
             p {text-align: justify;}
@@ -214,7 +214,7 @@ def home_page():
     """, unsafe_allow_html=True)
 
     st.markdown("""<strong>DISCLAIMER</strong><br/>
-                <br/><strong>1.THIS CALCULATION PROGRAM DOES NOT PROVIDE MEDICAL ADVICE</strong>
+                <br/><strong>1. THIS CALCULATION PROGRAM DOES NOT PROVIDE MEDICAL ADVICE</strong>
                 <br/>The calculation program provided is available to you for informational purposes only. Although the calculation program provides educational information about healthcare, it does not provide medical diagnoses or recommendations regarding an individual’s medical treatment. 
                 <br/>This software is to be used as a guide only, and health care professionals should use sound clinical judgement and individualize therapy to each specific patient care situation. All calculations must be confirmed before clinical use or diagnostic purposes by qualified medical professionals.                 
                 <br/><strong>2. DISCLAIMER OF WARRANTIES</strong>
