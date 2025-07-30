@@ -48,7 +48,7 @@ def home_page():
         '#': [1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17],
         'Input': ["Patient id","Lab date","Number of HD per week","Preceding interdialytic interval","Pre-dialysis body weight","Post-dialysis body weight",
                   "Session length","Blood flow rate","Pre-dialyzer infusion rate","Post-dialyzer infusion rate","Dialysate flow rate ",
-                  "Dialyzer urea KoA in vitro ","Pre-dialysis Serum Urea Nitrogen","Post-dialysis Serum Urea Nitrogen","Renal urea clearance (999 if urine)* ",
+                  "Dialyzer urea KoA in vitro ","Pre-dialysis Blood or Serum Urea Nitrogen","Post-dialysis Blood or Serum Urea Nitrogen","Renal urea clearance (999 if urine)* ",
                   "Urinary Output ","Urinary Urea Nitrogen"],
         'Symbol': ["PTID","Lab date  ","NHDWK","PIDI","BW0","BWT","TD","Qb","HDFPRE","HDFPOST","Qd","KoA","C0","CT","KRU","UO","UUN"],
         'Units': ["", 	"(dd/mm/wk)","Days","Days","kg","kg","min","ml/min","ml/min","ml/min","ml/min","ml/min","mg/dl","mg/dl","ml/min","ml/day","mg/dl"],

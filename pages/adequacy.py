@@ -30,10 +30,7 @@ def adequacy_page():
         """,
         unsafe_allow_html=True
     )   
-           
-    def PIDI_value():
-        if NHDWK ==1:
-            return 7       
+
     def PIDI_min():
         if NHDWK ==1:
             return 7
@@ -41,6 +38,7 @@ def adequacy_page():
             return 3
         elif NHDWK ==3:
             return 2    
+        
     def PIDI_max():
         if NHDWK ==1:
             return 7
@@ -90,7 +88,7 @@ def adequacy_page():
             min_value=PIDI_min(),
             max_value=PIDI_max(),
             step=1,
-            value=None,
+            value=PIDI_min(),
         )  
         
         BW0 = st.number_input(
@@ -152,14 +150,14 @@ def adequacy_page():
             step=1
         )   
         C0 = st.number_input(
-            "Pre-dialysis Serum Urea Nitrogen (mg/dl)",
+            "Pre-dialysis Blood or Serum Urea Nitrogen (mg/dl)",
             min_value=20,
             max_value=200,
             value=None,
             step=1,        
         )
         CT = st.number_input(
-            "Post-dialysis Serum Urea Nitrogen (mg/dl)",
+            "Post-dialysis Blood or Serum Urea Nitrogen (mg/dl)",
             min_value=5,
             max_value=150,
             value=None,
@@ -207,8 +205,8 @@ def adequacy_page():
                                      "Post-dilution infusion rate":HDFPOST,
                                      "Dialysate flow rate":QD,
                                      "Dialyzer Urea KoA in vitro":KOAvitro,
-                                     "Pre-dialysis Serum Urea Nitrogen":C0,
-                                     "Post-dialysis Serum Urea Nitrogen":CT,
+                                     "Pre-dialysis Blood or Serum Urea Nitrogen":C0,
+                                     "Post-dialysis Blood or Serum Urea Nitrogen":CT,
                                      "KRUw":KRUw, "Urinary Output":UO,"Urinary Urea Nitrogen":UUN}
             none_values = [key for key, value in validation_inputs.items() if value is None]  # List of input names with None values
             if none_values:
@@ -304,7 +302,7 @@ def adequacy_page():
                         "Pre-dilution infusion rate (ml/min)":HDFPRE,
                         "Post-dilution infusion rate (ml/min)":HDFPOST, "Dialysate flow rate ":QD,
                         "Dialyzer urea KoA in vitro ":KOAvitro,
-                        "Pre-dialysis Serum Urea Nitrogen":C0,"Post-dialysis Serum Urea Nitrogen":CT,"Renal urea clearance (999 if urine)":KRUw,
+                        "Pre-dialysis Blood or Serum Urea Nitrogen":C0,"Post-dialysis Blood or Serum Urea Nitrogen":CT,"Renal urea clearance (999 if urine)":KRUw,
                         "Urinary Output ":UO,"Urinary Urea Nitrogen":UUN},
                         output_data={"Patient Identifier":patient_id,
                                     "Total Dialyzer Urea Clearance ":results['KTOT'],

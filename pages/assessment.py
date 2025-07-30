@@ -60,7 +60,7 @@ def assessment_page():
             min_value=PIDI_min(),
             max_value=PIDI_max(),
             step=1,
-            value=None,      
+            value=PIDI_min(),      
         )
         IDWG = st.number_input(
             "Weight gain during PIDI",                    
