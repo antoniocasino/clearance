@@ -64,6 +64,9 @@ def adequacy_page():
             return 999 
         else:
             return None              
+    def CT_max():
+        if C0:
+            return C0-1
                 
     with st.form("adequacye_form"):
         patient_id = st.text_input(
@@ -88,7 +91,7 @@ def adequacy_page():
             min_value=PIDI_min(),
             max_value=PIDI_max(),
             step=1,
-            value=PIDI_min(),
+            value=None,
         )  
         
         BW0 = st.number_input(
@@ -156,10 +159,11 @@ def adequacy_page():
             value=None,
             step=1,        
         )
+        # Update session state for C0
         CT = st.number_input(
             "Post-dialysis Blood or Serum Urea Nitrogen (mg/dl)",
             min_value=5,
-            max_value=150,
+            max_value=CT_max(),
             value=None,
             step=1
         )  
