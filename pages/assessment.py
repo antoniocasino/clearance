@@ -14,20 +14,15 @@ def assessment_page():
         """,
         unsafe_allow_html=True
     )
-    def PIDI_min():
-        if NHDWK ==1:
-            return 7
-        elif NHDWK ==2:
-            return 3
-        elif NHDWK ==3:
-            return 2    
-    def PIDI_max():
-        if NHDWK ==1:
-            return 7
-        elif NHDWK ==2:
-            return 4
-        elif NHDWK ==3:
-            return 3  
+    def PIDI_warning():
+        if NHDWK==1 and PIDI!=0:
+            return f"The only value allowed for Preceding interdialytic interval is 7"
+        elif NHDWK==2 and PIDI!=3 and PIDI !=4:
+            return f"Values allowed for Preceding interdialytic interval are 3 and 4"
+        elif NHDWK==3 and PIDI!=2 and PIDI!=3:
+            return f"Values allowed for Preceding interdialytic interval are 2 and 3"
+        else:
+            return ""
            
     with st.form("assessment_form"):
         patient_id = st.text_input(
@@ -57,10 +52,10 @@ def assessment_page():
         )
         PIDI = st.number_input(
             "Preceding interdialytic interval", 
-            min_value=PIDI_min(),
-            max_value=PIDI_max(),
+            min_value=1,
+            max_value=7,
             step=1,
-            value=PIDI_min(),      
+            value=None,      
         )
         IDWG = st.number_input(
             "Weight gain during PIDI",                    
@@ -80,9 +75,11 @@ def assessment_page():
             validation_inputs = {"Patient Identifier":patient_id,"Number of HD per week":NHDWK,
                       "Normalised Kru":KRUN,"eKt/V":EKTV,"Preceding interdialytic interval":PIDI,"Weight gain during PIDI":IDWG}
             none_values = [key for key, value in validation_inputs.items() if value is None]  # List of input names with None values
-            if none_values:
+            if none_values or PIDI_warning() !="":
                 ol_string = "<ul>\n"  # Start the ordered list                
                 ol_string += "".join(f"  <li>{item}</li>\n" for item in none_values)  # Add each item as a list item
+                if PIDI_warning() !="":
+                    ol_string += f"  <li>{PIDI_warning()}</li>\n"
                 ol_string += "</ul>\n"  
                 st.markdown(f"<div style='background-color:lightgoldenrodyellow; color:#926c05;'>The following fields are missing: {ol_string}</div>",unsafe_allow_html=True)                  
             else:                

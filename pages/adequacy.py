@@ -29,24 +29,23 @@ def adequacy_page():
         </style>
         """,
         unsafe_allow_html=True
-    )   
+    )    
+    def PIDI_warning():
+        if NHDWK==1 and PIDI!=0:
+            return f"The only value allowed for Preceding interdialytic interval is 7"
+        elif NHDWK==2 and PIDI!=3 and PIDI !=4:
+            return f"Values allowed for Preceding interdialytic interval are 3 and 4"
+        elif NHDWK==3 and PIDI!=2 and PIDI!=3:
+            return f"Values allowed for Preceding interdialytic interval are 2 and 3"
+        else:
+            return ""
 
-    def PIDI_min():
-        if NHDWK ==1:
-            return 7
-        elif NHDWK ==2:
-            return 3
-        elif NHDWK ==3:
-            return 2    
-        
-    def PIDI_max():
-        if NHDWK ==1:
-            return 7
-        elif NHDWK ==2:
-            return 4
-        elif NHDWK ==3:
-            return 3    
-            
+    def CT_warning():
+        if CT and C0 and CT>=C0:
+            return f"Pre-dialysis Blood or Serum Urea Nitrogen must be less than Post-dialysis"
+        else:
+            return ""   
+                
     def KRU_max():
         if UO and UUN and UO >0 and UUN >0:
             return 999
@@ -64,9 +63,6 @@ def adequacy_page():
             return 999 
         else:
             return None              
-    def CT_max():
-        if C0:
-            return C0-1
                 
     with st.form("adequacye_form"):
         patient_id = st.text_input(
@@ -88,8 +84,8 @@ def adequacy_page():
 
         PIDI = st.number_input(
             "Preceding inter-dialytic interval (days: 2, 3, 4, or 7)",
-            min_value=PIDI_min(),
-            max_value=PIDI_max(),
+            min_value=1,
+            max_value=7,
             step=1,
             value=None,
         )  
@@ -163,7 +159,7 @@ def adequacy_page():
         CT = st.number_input(
             "Post-dialysis Blood or Serum Urea Nitrogen (mg/dl)",
             min_value=5,
-            max_value=CT_max(),
+            max_value=199,
             value=None,
             step=1
         )  
@@ -213,9 +209,14 @@ def adequacy_page():
                                      "Post-dialysis Blood or Serum Urea Nitrogen":CT,
                                      "KRUw":KRUw, "Urinary Output":UO,"Urinary Urea Nitrogen":UUN}
             none_values = [key for key, value in validation_inputs.items() if value is None]  # List of input names with None values
-            if none_values:
+            
+            if none_values or PIDI_warning() !="" or CT_warning() !="":
                 ol_string = "<ul>\n"  # Start the ordered list                
                 ol_string += "".join(f"  <li>{item}</li>\n" for item in none_values)  # Add each item as a list item
+                if PIDI_warning() !="":
+                    ol_string += f"  <li>{PIDI_warning()}</li>\n"
+                if CT_warning() !="":
+                    ol_string += f"  <li>{CT_warning()}</li>\n"
                 ol_string += "</ul>\n"                    
                 st.markdown(f"<div style='background-color:lightgoldenrodyellow; color:#926c05;'>The following fields are missing: {ol_string}</div>",unsafe_allow_html=True)
             else:
