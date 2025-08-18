@@ -156,7 +156,7 @@ def clearance_page():
    
         #clearnace_button = st.button(key="clearance", label="Calculate")
     INPUT_KEYS = [
-        "id", "cle_date", "vdp", "uf", 
+        "id", "cle_date", "vdp", "uf", "manufacturer_select.clearance", "model_select.clearance",
         "koavitro", "hdfpre", "hdfpost", "qd", "session_time", "ekvt"
     ]
 
