@@ -4,7 +4,15 @@ import pandas as pd
 from components.kdn_calculator import calculate_kdn_qbwn
 from components.pdf_builder import create_pdf
 
-def clearance_page():    
+def clearance_page():
+    # Load the data from the CSV file
+    # This will load the data only once, improving performance
+    if "df_dialyzers" not in st.session_state:
+        df = pd.read_csv('Table_of_Dialyzers.csv', delimiter=';')
+        df['KoA'] = pd.to_numeric(df['KoA'], errors='coerce')
+        df.dropna(subset=['KoA'], inplace=True)
+        st.session_state.df_dialyzers = df
+
     st.title("Dialyzer clearance and blood flow rate needed to reach the target value of eKt/V") 
     st.markdown("""
         <style>
@@ -30,7 +38,29 @@ def clearance_page():
                 """,
                 unsafe_allow_html=True
             )      
+    # NOTE: Place combo boxes inside st.expander for a group/legend
+    with st.expander("Dialyzer Urea KoA in vitro"):
+        manufacturers = st.session_state.df_dialyzers['Manufacturer'].unique()
+        selected_manufacturer = st.selectbox(
+            "Manufacturer",
+            manufacturers,
+            key='manufacturer_select.clearance'
+        )
+        
+        models = st.session_state.df_dialyzers[st.session_state.df_dialyzers['Manufacturer'] == selected_manufacturer]['Model'].unique()
+        selected_model = st.selectbox(
+            "Model",
+            models,
+            key='model_select.clearance',
+            index=None
+        )
 
+    selected_koa = None
+    if selected_model:
+        selected_koa = st.session_state.df_dialyzers[
+            (st.session_state.df_dialyzers['Manufacturer'] == selected_manufacturer) &
+            (st.session_state.df_dialyzers['Model'] == selected_model)
+        ]['KoA'].iloc[0]
     with st.form("clearance_form"):
         
         patient_id = st.text_input("Patient Identifier",
@@ -59,11 +89,11 @@ def clearance_page():
         
         koavitro = st.number_input(
             "In vitro KOA of the dialyzer (ml/min)",
-            min_value=600,
-            max_value=2000,
-            value=None,
-            step=1,            
-        )                       
+            min_value=600.0,
+            max_value=2000.0,
+            value=selected_koa,
+            step=0.1
+        )        
         hdfpre = st.number_input(
             "HDFPRE (ml/min)",
             min_value=0,

@@ -4,7 +4,15 @@ from components.adequacy import ihd_calculation
 from components.pdf_builder import create_pdf
 import pandas as pd
 
-def adequacy_page():    
+def adequacy_page():
+    # Load the data from the CSV file
+    # This will load the data only once, improving performance
+    if "df_dialyzers" not in st.session_state:
+        df = pd.read_csv('Table_of_Dialyzers.csv', delimiter=';')
+        df['KoA'] = pd.to_numeric(df['KoA'], errors='coerce')
+        df.dropna(subset=['KoA'], inplace=True)
+        st.session_state.df_dialyzers = df
+
     st.title("Prescription of incremental HD based on urea kinetics") 
     st.markdown("""
         <style>
@@ -63,7 +71,31 @@ def adequacy_page():
             return 999 
         else:
             return None              
-                
+
+    # NOTE: Place combo boxes inside st.expander for a group/legend
+    with st.expander("Dialyzer Urea KoA in vitro"):
+        manufacturers = st.session_state.df_dialyzers['Manufacturer'].unique()
+        selected_manufacturer = st.selectbox(
+            "Manufacturer",
+            manufacturers,
+            key='manufacturer_select'
+        )
+        
+        models = st.session_state.df_dialyzers[st.session_state.df_dialyzers['Manufacturer'] == selected_manufacturer]['Model'].unique()
+        selected_model = st.selectbox(
+            "Model",
+            models,
+            key='model_select',
+            index=None
+        )
+
+    selected_koa = None
+    if selected_model:
+        selected_koa = st.session_state.df_dialyzers[
+            (st.session_state.df_dialyzers['Manufacturer'] == selected_manufacturer) &
+            (st.session_state.df_dialyzers['Model'] == selected_model)
+        ]['KoA'].iloc[0]
+
     with st.form("adequacye_form"):
         patient_id = st.text_input(
             "Patient Identifier", 
@@ -141,13 +173,15 @@ def adequacy_page():
             value=None,
             step=1
         )
+        
         KOAvitro = st.number_input(
             "Dialyzer Urea KoA in vitro (ml/min)",
-            min_value=600,
-            max_value=2000,
-            value=None,
-            step=1
-        )   
+            min_value=600.0,
+            max_value=2000.0,
+            value=selected_koa,
+            step=0.1
+        )
+        
         C0 = st.number_input(
             "Pre-dialysis Blood or Serum Urea Nitrogen (mg/dl)",
             min_value=20.0,

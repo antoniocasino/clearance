@@ -14,7 +14,7 @@ def assessment_page():
         """,
         unsafe_allow_html=True
     )
-def PIDI_warning():
+    def PIDI_warning():
         if NHDWK==1 and PIDI!=7:
             return f"The only value allowed for Preceding interdialytic interval is 7"
         elif NHDWK==2 and PIDI!=3 and PIDI !=4:
