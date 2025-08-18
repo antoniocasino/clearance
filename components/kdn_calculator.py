@@ -28,8 +28,8 @@ def calculate_kdn_qbwn( vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt):
         return "Error: VDP must be between 20 and 50."
     if not (0.1 <= uf <= 5):
         return "Error: UF must be between 0.1 and 5."
-    if not (600 <= koavitro <= 2000):
-        return "Error: KOAvitro must be between 600 and 2000."
+    if not (500 <= koavitro <= 2400):
+        return "Error: KOAvitro must be between 500 and 2200."
     if not (0 <= hdfpre <= 250):
         return "Error: HDFPRE must be between 0 and 250."
     if not (0 <= hdfpost <= 150):

@@ -4,6 +4,7 @@ import pandas as pd
 from components.kdn_calculator import calculate_kdn_qbwn
 from components.pdf_builder import create_pdf
 
+
 def clearance_page():
     # Load the data from the CSV file
     # This will load the data only once, improving performance
@@ -27,7 +28,7 @@ def clearance_page():
             .font-bigger{
                 font-size: 20px
             }
-            .stFormSubmitButton > button {
+            .stButton > button {
                 font-size: 16px;                
                 color: black;
                 margin: 0 auto;
@@ -38,6 +39,39 @@ def clearance_page():
                 """,
                 unsafe_allow_html=True
             )      
+    def clear_inputs():
+        """Iterates over the predefined list of keys and clears the corresponding session state values."""
+        for key in INPUT_KEYS:
+            if key in st.session_state:
+                st.session_state[key] = None
+                   
+    patient_id = st.text_input("Patient Identifier",
+                                key="id",
+                                value=None,)
+    date = st.date_input(
+        "Select a date (dd/mm/yyyy)",            
+        format="DD/MM/YYYY",
+        value=None,
+        key="cle_date"
+    )
+    vdp = st.number_input(
+        "Patient's urea volume (L)",
+        min_value=20,
+        max_value=50,
+        value=None,
+        key="vdp",
+        step=1
+    )
+    uf = st.number_input(
+        "Expected intradialysis weight loss (L)",
+        min_value=0.1,
+        max_value=5.0,
+        value=None,
+        step=0.1,  
+        key="uf",          
+        format="%.1f"
+    )  
+    
     # NOTE: Place combo boxes inside st.expander for a group/legend
     with st.expander("Dialyzer Urea KoA in vitro"):
         manufacturers = st.session_state.df_dialyzers['Manufacturer'].unique()
@@ -55,91 +89,77 @@ def clearance_page():
             index=None
         )
 
-    selected_koa = None
-    if selected_model:
-        # NOTE: Added int() cast here
-        selected_koa = int(st.session_state.df_dialyzers[
-            (st.session_state.df_dialyzers['Manufacturer'] == selected_manufacturer) &
-            (st.session_state.df_dialyzers['Model'] == selected_model)
-        ]['KoA'].iloc[0])
-    with st.form("clearance_form"):
-        
-        patient_id = st.text_input("Patient Identifier",
-                                    key="id",
-                                    value=None,)
-        date = st.date_input(
-            "Select a date (dd/mm/yyyy)",            
-            format="DD/MM/YYYY",
-            value=None,
-        )
-        vdp = st.number_input(
-            "Patient's urea volume (L)",
-            min_value=20,
-            max_value=50,
-            value=None,
-            step=1
-        )
-        uf = st.number_input(
-            "Expected intradialysis weight loss (L)",
-            min_value=0.1,
-            max_value=5.0,
-            value=None,
-            step=0.1,            
-            format="%.1f"
-        )  
-        
-        koavitro = st.number_input(
-            "In vitro KOA of the dialyzer (ml/min)",
-            min_value=600,
-            max_value=2000,
-            value=selected_koa,
-            step=1
-        )        
-        hdfpre = st.number_input(
-            "HDFPRE (ml/min)",
-            min_value=0,
-            max_value=150,
-            value=None,
-            step=1
-        )  
-        hdfpost = st.number_input(
-            "HDFPOST (ml/min)",
-            min_value=0,
-            max_value=150,
-            value=None,
-            step=1
-        )
-        qd = st.number_input(
-            "Diaysate Flow rate (ml/min)",
-            min_value=301,
-            max_value=800, 
-            value=None,
-            step=1
-        )
-        t = st.number_input(
-            "Session length (min)",
-            min_value=60,
-            max_value=480,
-            value=None,
-            step=1
-        )
-        ekvt = st.number_input(
-            "eKt/V target",
-            min_value=0.3,
-            max_value=2.0,
-            value=None,
-            step=0.1,            
-            format="%.1f"
-        )   
+        selected_koa = None
+        if selected_model:
+            # NOTE: Added int() cast here
+            selected_koa = int(st.session_state.df_dialyzers[
+                (st.session_state.df_dialyzers['Manufacturer'] == selected_manufacturer) &
+                (st.session_state.df_dialyzers['Model'] == selected_model)
+            ]['KoA'].iloc[0]) 
+
+            koavitro = st.number_input(
+                "In vitro KOA of the dialyzer (ml/min)",
+                min_value=500,
+                max_value=2400,
+                value=selected_koa,
+                key="koavitro", 
+                step=1
+            )        
+
+    hdfpre = st.number_input(
+        "HDFPRE (ml/min)",
+        min_value=0,
+        max_value=150,
+        value=None,
+        key="hdfpre", 
+        step=1
+    )  
+    hdfpost = st.number_input(
+        "HDFPOST (ml/min)",
+        min_value=0,
+        max_value=150,
+        value=None,
+        key="hdfpost",
+        step=1
+    )
+    qd = st.number_input(
+        "Diaysate Flow rate (ml/min)",
+        min_value=301,
+        max_value=800, 
+        value=None,
+        key="qd",
+        step=1
+    )
+    t = st.number_input(
+        "Session length (min)",
+        min_value=60,
+        max_value=480,
+        value=None,
+        key="session_time",
+        step=1
+    )
+    ekvt = st.number_input(
+        "eKt/V target",
+        min_value=0.3,
+        max_value=2.0,
+        value=None,
+        step=0.1,
+        key="ekvt",            
+        format="%.1f"
+    )   
     
-        col1, col2 = st.columns([1,1]) # to arrange buttons horizontally
-        with col1:
-            submit = st.form_submit_button("Submit")
-        with col2:
-            reset = st.form_submit_button("Reset", on_click=lambda: st.session_state.clear()) 
+    col1, col2 = st.columns([1,1]) # to arrange buttons horizontally
+    with col1:
+        submit = st.button("Submit", key="clearance_submit")
+    with col2:
+        reset = st.button("Reset", on_click=clear_inputs, key="clearance_reset")  
    
         #clearnace_button = st.button(key="clearance", label="Calculate")
-        
+    INPUT_KEYS = [
+        "id", "cle_date", "vdp", "uf", 
+        "koavitro", "hdfpre", "hdfpost", "qd", "session_time", "ekvt"
+    ]
+
     if submit:
         with st.spinner("Extracting... it takes time..."):            
             validation_inputs = {

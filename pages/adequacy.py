@@ -27,7 +27,7 @@ def adequacy_page():
             .font-bigger{
                 font-size: 20px;
             }
-            .stFormSubmitButton > button {
+            .stButton > button {
                 font-size: 16px;                
                 color: black;
                 margin: 0 auto;
@@ -49,8 +49,8 @@ def adequacy_page():
             return ""
 
     def CT_warning():
-        if CT and C0 and CT<=C0:
-            return f"Pre-dialysis Blood or Serum Urea Nitrogen must be less than Post-dialysis"
+        if CT and C0 and CT>=C0:
+            return f"Post-dialysis Blood or Serum Urea Nitrogen must be less than Pre-dialysis"
         else:
             return ""   
                 
@@ -71,7 +71,100 @@ def adequacy_page():
             return 999 
         else:
             return None              
+    
+    def clear_inputs():
+        """Iterates over the predefined list of keys and clears the corresponding session state values."""
+        for key in INPUT_KEYS:
+            if key in st.session_state:
+                st.session_state[key] = None
 
+    
+    patient_id = st.text_input(
+        "Patient Identifier", 
+        key="ihd_id",
+        value=None,)
+    date = st.date_input(
+        "Lab Date (dd/mm/yy)",
+        value=None,
+        format="DD/MM/YYYY",
+        key="lab_date"
+    )
+    NHDWK = st.number_input(
+        "Number of HD  sessions per week (1, 2, or 3)",
+        min_value=1,
+        max_value=3,
+        value=None,
+        key="NHDWK",
+        step=1
+    )   
+
+    PIDI = st.number_input(
+        "Preceding inter-dialytic interval (days: 2, 3, 4, or 7)",
+        min_value=1,
+        max_value=7,
+        step=1,
+        key="PIDI",
+        value=None,
+    )  
+    
+    BW0 = st.number_input(
+        "Pre-dialysis Body Weight (kg)",
+        min_value=20,
+        max_value=140,
+        value=None,
+        key="BW0",
+        step=1,        
+    )                       
+    BWT = st.number_input(
+        "Post-dialysis Body weight (kg)",
+        min_value=20,
+        max_value=140, 
+        value=None,
+        key="BWT",
+        step=1
+    )
+    T = st.number_input(
+        "Session length (min)",
+        key="idh_time",
+        min_value=60,
+        max_value=480,
+        value=None,       
+        step=1
+    )  
+    QB = st.number_input(
+        "Blood Flow Rate (ml/min)",
+        min_value=100,
+        max_value=400,
+        value=None,
+        key="QB",
+        step=1
+    )
+    HDFPRE = st.number_input(
+        "Pre-dilution infusion rate (ml/min)",
+        min_value=0,
+        max_value=250,
+        value=None,
+        key="HDFPRE",
+        step=1
+    )
+
+    HDFPOST = st.number_input(
+        "Post-dilution infusion rate (ml/min)",
+        min_value=0,
+        max_value=150,
+        value=None,
+        key="HDFPOST",
+        step=1,        
+    )   
+    QD = st.number_input(
+        "Dialysate flow rate (ml/min)",
+        min_value=300,
+        max_value=800,
+        value=None,
+        key="QD",
+        step=1
+    )
+    
     # NOTE: Place combo boxes inside st.expander for a group/legend
     with st.expander("Dialyzer Urea KoA in vitro"):
         manufacturers = st.session_state.df_dialyzers['Manufacturer'].unique()
@@ -88,146 +181,81 @@ def adequacy_page():
             key='model_select',
             index=None
         )
-
-    selected_koa = None
-    if selected_model:
-        # NOTE: Added int() cast here
-        selected_koa = int(st.session_state.df_dialyzers[
-            (st.session_state.df_dialyzers['Manufacturer'] == selected_manufacturer) &
-            (st.session_state.df_dialyzers['Model'] == selected_model)
-        ]['KoA'].iloc[0])
-
-    with st.form("adequacye_form"):
-        patient_id = st.text_input(
-            "Patient Identifier", 
-            key="ihd_id",
-            value=None,)
-        date = st.date_input(
-            "Lab Date (dd/mm/yy)",
-            value=None,
-            format="DD/MM/YYYY",
-        )
-        NHDWK = st.number_input(
-            "Number of HD  sessions per week (1, 2, or 3)",
-            min_value=1,
-            max_value=3,
-            value=None,
-            step=1
-        )   
-
-        PIDI = st.number_input(
-            "Preceding inter-dialytic interval (days: 2, 3, 4, or 7)",
-            min_value=1,
-            max_value=7,
-            step=1,
-            value=None,
-        )  
-        
-        BW0 = st.number_input(
-            "Pre-dialysis Body Weight (kg)",
-            min_value=20,
-            max_value=140,
-            value=None,
-            step=1,        
-        )                       
-        BWT = st.number_input(
-            "Post-dialysis Body weight (kg)",
-            min_value=20,
-            max_value=140, 
-            value=None,
-            step=1
-        )
-        T = st.number_input(
-            "Session length (min)",
-            key="idh_time",
-            min_value=60,
-            max_value=480,
-            value=None,
-            step=1
-        )  
-        QB = st.number_input(
-            "Blood Flow Rate (ml/min)",
-            min_value=100,
-            max_value=400,
-            value=None,
-            step=1
-        )
-        HDFPRE = st.number_input(
-            "Pre-dilution infusion rate (ml/min)",
-            min_value=0,
-            max_value=250,
-            value=None,
-            step=1
-        )
+        selected_koa = None
     
-        HDFPOST = st.number_input(
-            "Post-dilution infusion rate (ml/min)",
-            min_value=0,
-            max_value=150,
-            value=None,
-            step=1,        
-        )   
-        QD = st.number_input(
-            "Dialysate flow rate (ml/min)",
-            min_value=300,
-            max_value=800,
-            value=None,
-            step=1
-        )
-        
-        KOAvitro = st.number_input(
-            "Dialyzer Urea KoA in vitro (ml/min)",
-            min_value=600,
-            max_value=2000,
-            value=selected_koa,
-            step=1
-        )
-        
-        C0 = st.number_input(
-            "Pre-dialysis Blood or Serum Urea Nitrogen (mg/dl)",
-            min_value=20.0,
-            max_value=200.0,
-            value=None,
-            step=0.1,        
-        )
-        # Update session state for C0
-        CT = st.number_input(
-            "Post-dialysis Blood or Serum Urea Nitrogen (mg/dl)",
-            min_value=5.0,
-            max_value=199.0,
-            value=None,
-            step=0.1
-        )  
-        
-        UO = st.number_input(
-            "Urinary Output ( ml/24 h)",
-            min_value=0,
-            max_value=4000,  
-            value=None,   
-            step=1
-        )   
-        UUN = st.number_input(
-            "Urinary Urea Nitrogen (UUN, mg/dl)",
-            min_value=0.0,
-            max_value=1000.0,
-            value=None,
-            step=0.1,         
-        ) 
-        KRUw = st.number_input(
-            "Renal urea clearance (ml/min)",
-            min_value=KRU_min(),
-            max_value=KRU_max(),            
-            value=KRU_value(),
-            step=1
-        )
-        col1, col2 = st.columns([1,1]) # to arrange buttons horizontally
-        with col1:
-            submit = st.form_submit_button("Submit")
-        with col2:
-            reset = st.form_submit_button("Reset", on_click=lambda: st.session_state.clear())  
+        if selected_model:
+            # NOTE: Added int() cast here
+            selected_koa = int(st.session_state.df_dialyzers[
+                (st.session_state.df_dialyzers['Manufacturer'] == selected_manufacturer) &
+                (st.session_state.df_dialyzers['Model'] == selected_model)
+            ]['KoA'].iloc[0])                 
+
+            KOAvitro = st.number_input(
+                "Dialyzer Urea KoA in vitro (ml/min)",
+                min_value=500,
+                max_value=2400,
+                value=selected_koa,
+                key="KOAvitro",
+                step=1
+            )
 
     
-    #ihd_button = st.button(key="ihd", label="Calculate")
+    
+    C0 = st.number_input(
+        "Pre-dialysis Blood or Serum Urea Nitrogen (mg/dl)",
+        min_value=20.0,
+        max_value=200.0,
+        value=None,
+        key="C0",
+        step=0.1,        
+    )
+    # Update session state for C0
+    CT = st.number_input(
+        "Post-dialysis Blood or Serum Urea Nitrogen (mg/dl)",
+        min_value=5.0,
+        max_value=199.0,
+        value=None,
+        key="CT",
+        step=0.1
+    )  
+    
+    UO = st.number_input(
+        "Urinary Output ( ml/24 h)",
+        min_value=0,
+        max_value=4000,  
+        value=None,
+        key="UO",   
+        step=1
+    )   
+    UUN = st.number_input(
+        "Urinary Urea Nitrogen (UUN, mg/dl)",
+        min_value=0.0,
+        max_value=1000.0,
+        value=None,
+        key="UUN",   
+        step=0.1,         
+    ) 
+    KRUw = st.number_input(
+        "Renal urea clearance (ml/min)",
+        min_value=KRU_min(),
+        max_value=KRU_max(),            
+        value=KRU_value(),
+        key="KRUw",   
+        step=1
+    )
+    col1, col2 = st.columns([1,1]) # to arrange buttons horizontally
+    with col1:
+        submit = st.button("Submit", key="adequacy_submit")
+    with col2:
+        reset = st.button("Reset", on_click=clear_inputs, key="adequacy_reset")  
+
+    
+    # Define a list of all input keys for easy management
+    INPUT_KEYS = [
+        "ihd_id", "lab_date", "NHDWK", "PIDI", "BW0", "BWT", "idh_time", "QB", 
+        "HDFPRE", "HDFPOST", "QD", "manufacturer_select", "model_select", 
+        "KOAvitro", "C0", "CT", "UO", "UUN", "KRUw"
+    ]
     
     if submit:
         with st.spinner("Extracting... it takes time..."):
