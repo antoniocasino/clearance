@@ -91,10 +91,11 @@ def adequacy_page():
 
     selected_koa = None
     if selected_model:
-        selected_koa = st.session_state.df_dialyzers[
+        # NOTE: Added int() cast here
+        selected_koa = int(st.session_state.df_dialyzers[
             (st.session_state.df_dialyzers['Manufacturer'] == selected_manufacturer) &
             (st.session_state.df_dialyzers['Model'] == selected_model)
-        ]['KoA'].iloc[0]
+        ]['KoA'].iloc[0])
 
     with st.form("adequacye_form"):
         patient_id = st.text_input(
@@ -176,10 +177,10 @@ def adequacy_page():
         
         KOAvitro = st.number_input(
             "Dialyzer Urea KoA in vitro (ml/min)",
-            min_value=600.0,
-            max_value=2000.0,
+            min_value=600,
+            max_value=2000,
             value=selected_koa,
-            step=0.1
+            step=1
         )
         
         C0 = st.number_input(
