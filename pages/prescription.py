@@ -16,7 +16,7 @@ def prescription_page():
     )
 
     def PIDI_warning():
-        if NHDWK==1 and PIDI!=0:
+        if NHDWK==1 and PIDI!=7:
             return f"The only value allowed for Preceding interdialytic interval is 7"
         elif NHDWK==2 and PIDI!=3 and PIDI !=4:
             return f"Values allowed for Preceding interdialytic interval are 3 and 4"

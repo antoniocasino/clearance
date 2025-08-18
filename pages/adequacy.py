@@ -31,7 +31,7 @@ def adequacy_page():
         unsafe_allow_html=True
     )    
     def PIDI_warning():
-        if NHDWK==1 and PIDI!=0:
+        if NHDWK==1 and PIDI!=7:
             return f"The only value allowed for Preceding interdialytic interval is 7"
         elif NHDWK==2 and PIDI!=3 and PIDI !=4:
             return f"Values allowed for Preceding interdialytic interval are 3 and 4"
@@ -41,7 +41,7 @@ def adequacy_page():
             return ""
 
     def CT_warning():
-        if CT and C0 and CT>=C0:
+        if CT and C0 and CT<=C0:
             return f"Pre-dialysis Blood or Serum Urea Nitrogen must be less than Post-dialysis"
         else:
             return ""   
