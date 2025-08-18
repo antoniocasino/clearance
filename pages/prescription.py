@@ -39,10 +39,10 @@ def prescription_page():
         )
         KRUN = st.number_input(
             "Normalised Kru", 
-            min_value=0,                         
-            max_value=7,  
+            min_value=0.0,                         
+            max_value=7.0,  
             value=None,  
-            step=1
+            step=0.1
         )       
         PIDI = st.number_input(
             "Preceding interdialytic interval", 

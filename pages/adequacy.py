@@ -150,18 +150,18 @@ def adequacy_page():
         )   
         C0 = st.number_input(
             "Pre-dialysis Blood or Serum Urea Nitrogen (mg/dl)",
-            min_value=20,
-            max_value=200,
+            min_value=20.0,
+            max_value=200.0,
             value=None,
-            step=1,        
+            step=0.1,        
         )
         # Update session state for C0
         CT = st.number_input(
             "Post-dialysis Blood or Serum Urea Nitrogen (mg/dl)",
-            min_value=5,
-            max_value=199,
+            min_value=5.0,
+            max_value=199.0,
             value=None,
-            step=1
+            step=0.1
         )  
         
         UO = st.number_input(
@@ -173,10 +173,10 @@ def adequacy_page():
         )   
         UUN = st.number_input(
             "Urinary Urea Nitrogen (UUN, mg/dl)",
-            min_value=0,
-            max_value=1000,
+            min_value=0.0,
+            max_value=1000.0,
             value=None,
-            step=1,         
+            step=0.1,         
         ) 
         KRUw = st.number_input(
             "Renal urea clearance (ml/min)",
