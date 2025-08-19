@@ -10,6 +10,13 @@ def assessment_page():
             [data-testid="stWidgetLabel"] > div {
                 font-size: 16px;
             }
+            .stFormSubmitButton > button {
+                font-size: 16px;                
+                color: black;
+                margin: 0 auto;
+                height: 2rem;
+                width: 12rem;
+            } 
         </style>
         """,
         unsafe_allow_html=True
