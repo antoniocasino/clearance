@@ -182,7 +182,7 @@ def adequacy_page():
             index=None
         )
         selected_koa = None
-    
+        KOAvitro = None
         if selected_model:
             # NOTE: Added int() cast here
             selected_koa = int(st.session_state.df_dialyzers[

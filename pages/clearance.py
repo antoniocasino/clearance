@@ -90,6 +90,7 @@ def clearance_page():
         )
 
         selected_koa = None
+        koavitro = None
         if selected_model:
             # NOTE: Added int() cast here
             selected_koa = int(st.session_state.df_dialyzers[
