@@ -79,6 +79,12 @@ def adequacy_page():
                 st.session_state[key] = None
 
     
+    selected_unit = st.radio(
+    "Select blood and urine concentrations units:",
+    ( 'Blood and urine urea nitrogen concentrations (mg/dl)',
+      'Blood and urine urea concentrations (mg/dl)',
+      'Blood and urine urea concentrations (mmol/l)')
+    )
     patient_id = st.text_input(
         "Patient Identifier", 
         key="ihd_id",
@@ -140,7 +146,7 @@ def adequacy_page():
         step=1
     )
     HDFPRE = st.number_input(
-        "Pre-dilution infusion rate (ml/min)",
+        "Pre-dilution infusion rate (ml/min) (set 0 in HD or in post-dilution HDF)",
         min_value=0,
         max_value=250,
         value=None,
@@ -149,7 +155,7 @@ def adequacy_page():
     )
 
     HDFPOST = st.number_input(
-        "Post-dilution infusion rate (ml/min)",
+        "Post-dilution infusion rate (ml/min) (set 0 in in HD or in pre-dilution HDF)",
         min_value=0,
         max_value=150,
         value=None,
@@ -236,7 +242,7 @@ def adequacy_page():
         step=0.1,         
     ) 
     KRUw = st.number_input(
-        "Renal urea clearance (ml/min)",
+        "Renal urea clearance (ml/min), enter 999 to calculate it from urine data",
         min_value=KRU_min(),
         max_value=KRU_max(),            
         value=KRU_value(),
@@ -250,6 +256,11 @@ def adequacy_page():
         reset = st.button("Reset", on_click=clear_inputs, key="adequacy_reset")  
 
     
+    BUN =1
+    if selected_unit == 'Blood and urine urea concentrations (mg/dl)':
+        BUN = 2.14
+    elif selected_unit == 'Blood and urine urea concentrations (mmol/l)':
+        BUN = 0.357
     # Define a list of all input keys for easy management
     INPUT_KEYS = [
         "ihd_id", "lab_date", "NHDWK", "PIDI", "BW0", "BWT", "idh_time", "QB", 
@@ -283,7 +294,7 @@ def adequacy_page():
                 ol_string += "</ul>\n"                    
                 st.markdown(f"<div style='background-color:lightgoldenrodyellow; color:#926c05;'>The following fields are missing: {ol_string}</div>",unsafe_allow_html=True)
             else:
-                inputs = {"PTID":patient_id,"LABDATE":date, "NHDWK":NHDWK, "PIDI":PIDI, 
+                inputs = {"BUN":BUN,"PTID":patient_id,"LABDATE":date, "NHDWK":NHDWK, "PIDI":PIDI, 
                                      "BW0":BW0,"BWT":BWT,"T":T,"QB":QB,"HDFPRE":HDFPRE,
                                      "HDFPOST":HDFPOST, "QD":QD,"KOAvitro":KOAvitro,
                                      "C0":C0,"CT":CT,"KRUw":KRUw, "UO":UO,"UUN":UUN} 
@@ -322,9 +333,9 @@ def adequacy_page():
                                    "Protein catabolic rate (g/kg/day)",
                                    "Renal urea clearance (calculated)",
                                    "KRU normalized per V 35 l",
-                                   "Equivalent Renal Clearance per V 35 l ",
+                                   "Equivalent Renal Urea Clearance normalized per V 35 l",
                                    "EKRUN_variable target (10-1.5 KRUN)*",
-                                   "EKR35 ≥10 – 1.5 KRUN *",
+                                   "EKRUN ≥ 10 – 1.5 KRUN *",
                                    "Standard Kt/V",
                                    "StdKt/V ≥ 2.1",
                                    "Ultrafiltration rate",
@@ -336,7 +347,7 @@ def adequacy_page():
                                    ], 
                         'Symbols':["Kd Tot","spKt/V","eKt/V",
                                    "Vdp","PCRn","KRU",
-                                   "KRUN","EKR35","EKRU_VTM",
+                                   "KRUN","EKRUN","EKRU_VTM",
                                    "Adequacy","StdKt/V","Adequacy",
                                    "UFR","Adequacy","TDN",
                                    "UFwk","eKt/V","eKt/V"],

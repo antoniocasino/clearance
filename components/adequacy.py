@@ -43,8 +43,8 @@ def ihd_calculation(inputs):
     c0 = inputs['C0']
     ct = inputs['CT']
     kruw = inputs['KRUw']
-    uo = inputs['UO']
-    uun = inputs['UUN']
+    uo = inputs['UO']/inputs['BUN']
+    uun = inputs['UUN']/inputs['BUN']
 
 
     results = {}
@@ -154,7 +154,7 @@ def ihd_calculation(inputs):
     results = {
         "KTOT": ktot, "SPKTV": spktv, "EKTV": ektv, "VDP": vdp,"PCRN":pcrn, "Kru": kru,
         "krun": krun, "ekrun": ekrun, "ekrun_min":ekrun_min, "AdeqEKR": adeqekr, "STDKTV": stdktv,
-        "AdeqStdKTV": adeqstdktv, "UFR": tdn, "AdeqUFR": adequfr, "TDN": tdn,
+        "AdeqStdKTV": adeqstdktv, "UFR": ufr, "AdeqUFR": adequfr, "TDN": tdn,
         "Ufwk": ufwk, "Ektv_ekru": ektv_ekru,
         "Ektv_stdktv": ektv_stdktv
     }  

@@ -108,7 +108,7 @@ def clearance_page():
             )        
 
     hdfpre = st.number_input(
-        "HDFPRE (ml/min)",
+        "Pre-dilution infusion rate (ml/min) (set 0 in HD or in post-dilution HDF)",
         min_value=0,
         max_value=150,
         value=None,
@@ -116,7 +116,7 @@ def clearance_page():
         step=1
     )  
     hdfpost = st.number_input(
-        "HDFPOST (ml/min)",
+        "Post-dilution infusion rate (ml/min) (set 0 in in HD or in pre-dilution HDF)",
         min_value=0,
         max_value=150,
         value=None,
