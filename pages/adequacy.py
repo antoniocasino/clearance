@@ -242,7 +242,7 @@ def adequacy_page():
     )    
     UUN_max_value = 1000.0*BUN    
     UUN = st.number_input(
-        "Urinary Urea or Urea Nitrogen concentration (UUN, mg/dl or mmol/l)",
+        "Urinary Urea or Urea Nitrogen concentration (mg/dl or mmol/l)",
         min_value=0.0,
         max_value=UUN_max_value,
         value=None,
