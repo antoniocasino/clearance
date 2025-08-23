@@ -361,7 +361,7 @@ def adequacy_page():
                                 "ml/min per 35l V","ml/min per 35l V","ml/min per 35l V",
                                 "Yes/No","Volume/wk","Yes/No",
                                 "ml/h per kg","Yes/No","min per session",
-                                "dimensionless","dimensionless","(l)"
+                                "(l)","dimensionless","dimensionless"
                                 ],                    
                         'Result': [
                                 results['KTOT'],results['SPKTV'],results['EKTV'],                                   
