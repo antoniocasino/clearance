@@ -283,9 +283,9 @@ def adequacy_page():
                                      "Post-dilution infusion rate":HDFPOST,
                                      "Dialysate flow rate":QD,
                                      "Dialyzer Urea KoA in vitro":KOAvitro,
-                                     "Pre-dialysis Blood or Serum Urea Nitrogen":C0,
-                                     "Post-dialysis Blood or Serum Urea Nitrogen":CT,
-                                     "KRUw":KRUw, "Urinary Output":UO,"Urinary Urea Nitrogen":UUN}
+                                     "Pre-dialysis Blood Urea Nitrogen":C0,
+                                     "Post-dialysis Blood Urea Nitrogen":CT,
+                                     "KRUw":KRUw, "Urinary Output":UO,"Urinary Urea or Urea Nitrogen concentration":UUN}
             none_values = [key for key, value in validation_inputs.items() if value is None]  # List of input names with None values
             
             if none_values or PIDI_warning() !="" or CT_warning() !="":
@@ -385,8 +385,8 @@ def adequacy_page():
                         "Pre-dilution infusion rate (ml/min)":HDFPRE,
                         "Post-dilution infusion rate (ml/min)":HDFPOST, "Dialysate flow rate ":QD,
                         "Dialyzer urea KoA in vitro ":KOAvitro,
-                        "Pre-dialysis Blood or Serum Urea Nitrogen":C0,"Post-dialysis Blood or Serum Urea Nitrogen":CT,"Renal urea clearance (999 if urine)":KRUw,
-                        "Urinary Output ":UO,"Urinary Urea Nitrogen":UUN},
+                        "Pre-dialysis Blood Urea Nitrogen":C0,"Post-dialysis Blood Urea Nitrogen":CT,"Renal urea clearance (999 if urine)":KRUw,
+                        "Urinary Output ":UO,"Urinary Urea or Urea Nitrogen concentration":UUN},
                         output_data={"Patient Identifier":patient_id,
                                     "Total Dialyzer Urea Clearance ":results['KTOT'],
                                     "Single pool Kt/V ":results['SPKTV'],
