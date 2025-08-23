@@ -50,7 +50,7 @@ def adequacy_page():
 
     def CT_warning():
         if CT and C0 and CT>=C0:
-            return f"Post-dialysis Blood or Serum Urea Nitrogen must be less than Pre-dialysis"
+            return f"Post-dialysis Blood Urea Nitrogen must be less than Pre-dialysis"
         else:
             return ""   
                 
@@ -160,7 +160,7 @@ def adequacy_page():
     )
 
     HDFPOST = st.number_input(
-        "Post-dilution infusion rate (ml/min) (set 0 in in HD or in pre-dilution HDF)",
+        "Post-dilution infusion rate (ml/min) (set 0 in HD or in pre-dilution HDF)",
         min_value=0,
         max_value=150,
         value=None,
@@ -213,7 +213,7 @@ def adequacy_page():
     C0_min_value = 20.0*BUN
     CO_max_value = 200.0*BUN 
     C0 = st.number_input(
-        "Pre-dialysis Blood Urea Nitrogen (mg/dl)",
+        "Pre-dialysis Blood Urea or Urea Nitrogen concentration (mg/dl or mmol/l)",
         min_value=C0_min_value,
         max_value=CO_max_value,
         value=None,
@@ -224,7 +224,7 @@ def adequacy_page():
     CT_max_value = 199.0*BUN 
     # Update session state for C0
     CT = st.number_input(
-        "Post-dialysis Blood Urea Nitrogen (mg/dl)",
+        "Post-dialysis Blood or Serum Urea Nitrogen concentration (mg/dl or mmol/l)",
         min_value=CT_min_value,
         max_value=CT_max_value,
         value=None,
@@ -241,7 +241,7 @@ def adequacy_page():
         step=1
     )    
     UUN_max_value = 1000.0*BUN    
-    UUN = st.number_input(
+    UUN = st.number_input(        
         "Urinary Urea or Urea Nitrogen concentration (mg/dl or mmol/l)",
         min_value=0.0,
         max_value=UUN_max_value,

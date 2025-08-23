@@ -2,34 +2,34 @@ import streamlit as st
 import pandas as pd
 
 def key_information_page():
-    st.title("Key Information for Nephrologists on Using the App 'EuReCa'")
-    st.markdown("""
-         <style>
-            p {text-align: justify;}
-        </style>
-        """,
-        unsafe_allow_html=True
-    ) 
+    # Set wide page layout for better table display    
+
+    st.title("Key Information for Nephrologist on Using the App “EuReCa”")
+
     st.write("""
     The EuReCa app is reserved exclusively for nephrologists involved in the treatment of adult patients on maintenance haemodialysis (HD), as all calculations must necessarily be confirmed by qualified medical professionals before clinical use or for diagnostic purposes.
 
     There are two ways to take into account residual kidney function (KRU). Neither is proven superior in clinical studies so far. The **standard Kt/V (stdKt/V)** is the historical method, and the **Normalised EKRU (EKRUN)** is more recently introduced (see Home page). EKRUN requires less dialysis and is preferable to most patients.
     """)
 
+    st.header("The App is made up of 5 modules.")
+
     # --- Module 1: Adequacy ---
-    st.header("1. The 'Adequacy' Module")
+    st.subheader("1. The 'Adequacy' Module")
     st.write("""
-    This is the main program that calculates all the key parameters of the double pool urea kinetic model (UKM). It shows the dialysis dose values (eKt/V) necessary to prescribe adequacy with one, two, and three HD sessions per week, respectively, according to criteria based alternately on stdKt/V or EKRUN with a variable target (see Home section), in order to choose the most suitable frequency and dose for the individual patient.
+    This is the main program that calculates all the key parameters of the double pool urea kinetic model (UKM). It shows the dialysis dose values (eKt/V) necessary to prescribe adequacy with one, two, and three HD sessions per week, respectively, according to criteria based alternately on standard Kt/V (stdKt/V) or Normalised EKRU (EKRUN) with a variable target (see Home section), in order to choose the most suitable frequency and dose for the individual patient (Table 1).
+
+    Below are the respective input and output values, with symbols, units of measurement, minimum and maximum levels of acceptability, and an example value.
     """)
 
+    st.markdown("**Select blood and urine concentrations units:**")
     st.write("""
-    **Select blood and urine concentrations units:**
     * Blood and urine urea nitrogen concentrations (mg/dl)
     * Blood and urine urea concentrations (mg/dl)
     * Blood and urine urea concentrations (mmol/l)
     """)
 
-    st.subheader("Table 1: Input and Output values of the module 'Adequacy'")
+    st.subheader("Table 1: Input and Output values of the module “Adequacy”")
 
     adequacy_input_data = {
         '#': list(range(1, 20)),
@@ -69,10 +69,19 @@ def key_information_page():
     }
 
     df_adequacy_input = pd.DataFrame(adequacy_input_data)
-    st.dataframe(df_adequacy_input, hide_index=True)
+    st.dataframe(df_adequacy_input)
 
-    st.subheader("Table 1: Output Values")
+    st.markdown(
+    """
+    *Input no. 9 and 10, set 0 in conventional HD. In haemo-diafiltration (HDF) when reinfusion occurs before the dialyzer (HDF-Pre) the flow rate in ml/min must be entered in point 9, i.e., in the Pre-dialyzer infusion rate. If HDF is performed with post-dialyzer reinfusion (HDF-Post), the flow rate in ml/min must be entered. Since pre- or post-dialyzer reinfusion influences the calculation of dialysis clearance, it is important to always enter the reinfusion flow rate in the calculation software input and be aware that not entering the flow rate for HDF patients can cause significant errors in the HDF prescription and assessment.*
 
+    *Input 14: the dialyzer area mass transfer coefficient (KoA) for urea is needed, together with Qb and Qd, to predict dialyzer clearance with the Michaels equation. In this module, the KoA is automatically inserted by selecting the filter manufacturer and model from an internal table. If the filter is not listed, we recommend entering the manufacturer and model of a similar filter. The resulting KoA value can be overridden by the KoA value calculated using the app's KoA module.*
+
+    *The default for the app is that a 24 hour collection is performed in the 24 hours up until the measurement of the Kt/V. Number 16 and 17 will be the values from this collection. If this is the case, enter 999 in #15. If this is not the case (i.e. urine collection done the week before), for #15 calculate the urea clearance (ml/min), using blood water urea concentrations (BUN/0.93 or BUN x 1.075) and enter it there. If there is no urine output, #15 = 0.*
+    """
+    )
+
+    st.subheader("OUTPUT DATA")
     adequacy_output_data = {
         '#': list(range(1, 19)),
         'Output': [
@@ -102,18 +111,17 @@ def key_information_page():
         ]
     }
     df_adequacy_output = pd.DataFrame(adequacy_output_data)
-    st.dataframe(df_adequacy_output, hide_index=True)
+    st.dataframe(df_adequacy_output)
 
     st.markdown("""
-    *Note.*
-    This module measures various kinetic parameters, such as Kd, V, KRUN, PCRn, and the two ECCs, and verifies that at least the minimum stdKt/V and/or EKRUN has been achieved. The latter is calculated as follows: EKRUN = EKRU/V x 35 l, i.e., the equivalent renal clearance of urea (EKRU) is normalized, i.e., divided by the patient's urea volume V, and then multiplied by a typical volume equal to 35 l. Normalized renal urea clearance (KRU) is calculated in the same way: KRUN = KRU/V x 35 L.
+    *Note.* This module measures various kinetic parameters, such as Kd, V, KRUN, PCRn, and the two ECCs, and verifies that at least the minimum stdKt/V and/or EKRUN has been achieved. The latter is calculated as follows: EKRUN = EKRU/V x 35 l, i.e., the equivalent renal clearance of urea (EKRU) is normalized, i.e., divided by the patient's urea volume V, and then multiplied by a typical volume equal to 35 l. Normalized renal urea clearance (KRU) is calculated in the same way: KRUN = KRU/V x 35 L.
     UKM-based treatment adequacy is defined as one with stdKt/V >= 2.1, or with EKRUN >= 10 - 1.5 KRUN. This last equation was introduced in the article "The reasons for a clinical trial on incremental haemodialysis", a research letter by Casino et al, on behalf of the Eudial Working Group of ERA-EDTA (NDT, 2020), in preparation of the protocol of "REAL LIFE" (RandomizEd clinical triaL on the effIcacy and saFety of incremental haEmodialysis), a randomized, multicentre and prospective study still ongoing (NCT04360694) evaluating the efficacy and safety of incremental hemodialysis compared to the standard regimen of three weekly sessions. It means that the minimum EKRUN to be delivered varies as a function of KRUN, being 10 ml/min for 35 l V when KRUN=0 and decreasing by 1.5 times the actual value of KRUN. For example, with KRUN = 2, minimum EKRUN = 10 - 1.5 x 2 = 7 ml/min for 35 l V. Of note, in anuric patients, EKRUN of 10 ml/min per 35 l V corresponds to eKt/V of 1.05 on 3HD/wk schedule, which in turn corresponds to stdKt/V=2.1 v/wk. This module also verifies the adequacy of the ultrafiltration rate, i.e., UFR<=13 ml/h/kg, and calculates the session duration (TDN) that would be required to achieve a UFR of 13 ml/h/kg. Finally, it estimates the weekly water load to be ultrafiltered.
     """)
 
     # --- Module 2: stdKt/V & EKRUN ---
     st.header("2. The 'stdKt/V & EKRUN' Module")
     st.write("""
-    This module calculates the stdKt/V and EKRUN values predicted by the following parameters: Number of HD sessions per week, Normalised KRU (KRUN), delivered dialysis dose (eKt/V), length of the previous interdialytic interval (PIDI and associated interdialytic weight gain (IDWG). One can realize that this module can be used both to explore the prescription with the two different ECCs and to predict whether the prescribed treatment would deliver at least the minimum adequate value for stdKt/V (2.1 v/wk) and/or EKRUN (10 – KRUN ml/min per 35 l V) (see above).
+    This module calculates the stdKt/V and EKRUN values predicted by the following parameters: Number of HD sessions per week, Normalised KRU (KRUN), delivered dialysis dose (eKt/V), length of the previous interdialytic interval (PIDI and associated interdialytic weight gain (IDWG). One can realize that this module can be used both to explore the prescription with the two different ECCs and to predict whether the prescribed treatment would deliver at least the minimum adequate value for stdKt/V (2.1 v/wk) and/or EKRUN (10 – 1.5 x KRUN ml/min per 35 l V) (see above).
     To highlight the differences associated with the use of stdKt/V and EKRUN in the once-weekly and twice-weekly regimens, we show two realistic practical examples.
     """)
 
@@ -132,7 +140,7 @@ def key_information_page():
         'Example': ["N.N.", 1, 4, 1.2, 4, 1]
     }
     df_table2a_input = pd.DataFrame(table2a_data)
-    st.dataframe(df_table2a_input, hide_index=True)
+    st.dataframe(df_table2a_input)
 
     table2a_output_data = {
         '#': [1, 2, 3, 4, 5],
@@ -146,7 +154,7 @@ def key_information_page():
         'Results': [1, 1.90, 7.41, 8.00, 4.00]
     }
     df_table2a_output = pd.DataFrame(table2a_output_data)
-    st.dataframe(df_table2a_output, hide_index=True)
+    st.dataframe(df_table2a_output)
 
     st.markdown("""
     *Note.* In this virtual patient, undergoing a once-weekly dialysis regimen, with KRUN=4 ml/min for 35 l V and eKt/V=1.2, the value of stdKt/V would be 1.90, which is lower than both the prescription target, (2.3), and the adequate minimum (2.1). In practice, the use of stdKt/V does not allow the once-weekly regimen in this patient. Conversely, EKRUN would be 7.41 ml/min for 35 L V, which is lower than the EKRUN prescription target, which in this case would be 8.0 ml/min for 35 L V, but higher than the EKRUN adequate minimum, which in this case would be 4 ml/min for 35 L V. In practice, you could continue the twice-weekly dialysis with the same parameters until the next check-up.
@@ -167,7 +175,7 @@ def key_information_page():
         'Example': ["N.N.", 2, 3, 1.0, 4, 1]
     }
     df_table2b_input = pd.DataFrame(table2b_data)
-    st.dataframe(df_table2b_input, hide_index=True)
+    st.dataframe(df_table2b_input)
 
     table2b_output_data = {
         '#': [1, 2, 3, 4, 5],
@@ -181,10 +189,10 @@ def key_information_page():
         'Results': [1.75, 2.12, 9.1, 9.0, 5.5]
     }
     df_table2b_output = pd.DataFrame(table2b_output_data)
-    st.dataframe(df_table2b_output, hide_index=True)
+    st.dataframe(df_table2b_output)
 
     st.markdown("""
-    *Note.* In this patient on a 2HD/week regimen, with KRUN=3 ml/min for 35 l V and eKt/V=1.0, the calculated stdKt/V is 2.12, which is below the prescription target (2.3), but above the adequate minimum (2.1). In practice, you could continue the twice-weekly dialysis with the same parameters until the next check-up.
+    *Note:* In this patient on a 2HD/week regimen, with KRUN=3 ml/min for 35 l V and eKt/V=1.0, the calculated stdKt/V is 2.12, which is below the prescription target (2.3), but above the adequate minimum (2.1). In practice, you could continue the twice-weekly dialysis with the same parameters until the next check-up.
     Normalized EKRU is 9.1 ml/min for 35 l V, which is higher than the prescription target (9.0 ml/min for 35 l V), and even more so than the adequate minimum (4 ml/min for 35 l V).
     In conclusion, pending specific evidence, it can be hypothesized that dialysis prescription and assessment should preferentially use EKRUN in 1HD/wk regimen, and indifferently EKRUN or stdKt/V in 2HD/wk regimen.
     """)
@@ -207,7 +215,7 @@ def key_information_page():
         'Example': ["N.N.", 2, 3, 4, 1]
     }
     df_table3_input = pd.DataFrame(table3_input_data)
-    st.dataframe(df_table3_input, hide_index=True)
+    st.dataframe(df_table3_input)
 
     table3_output_data = {
         '#': [1, 2, 3],
@@ -220,12 +228,12 @@ def key_information_page():
         'Results': [3.50, 0.98, 1.18]
     }
     df_table3_output = pd.DataFrame(table3_output_data)
-    st.dataframe(df_table3_output, hide_index=True)
+    st.dataframe(df_table3_output)
 
     # --- Module 4: Kd&Qb ---
     st.header("4. The 'Kd&Qb' Module")
     st.write("""
-    This module first calculates the dialysis clearance (Kd) of urea necessary (Kdn) to reach the target eKt/V as a function of V and KRU, and then the blood flow rate necessary (Qbn) to reach Kdn, based on the characteristics of the dialyzer, i.e., the dialyzer mass transfer coefficient for urea (KoA), and the values of the other parameters that determine Kd.
+    This module first calculates the dialysis clearance (Kd) of urea necessary (Kdn) to reach the target eKt/V as a function of V and KRU, and then the blood flow rate necessary (Qbn) to reach Kdn, based on the characteristics of the dialyzer, i.e., the dialyzer mass transfer coefficient for urea (KoA), and the values of the other parameters that determine Kd (Table 4).
     """)
     st.subheader("Table 4: Dialyzer clearance and blood flow rate needed to reach the target value of eKt/V")
 
@@ -250,7 +258,7 @@ def key_information_page():
         ]
     }
     df_table4_input = pd.DataFrame(table4_input_data)
-    st.dataframe(df_table4_input, hide_index=True)
+    st.dataframe(df_table4_input)
 
     table4_output_data = {
         '#': [1, 2],
@@ -260,7 +268,7 @@ def key_information_page():
         'Example': [187.4, 263]
     }
     df_table4_output = pd.DataFrame(table4_output_data)
-    st.dataframe(df_table4_output, hide_index=True)
+    st.dataframe(df_table4_output)
 
     # --- Module 5: KoA ---
     st.header("5. The 'KoA' Module")
@@ -272,7 +280,7 @@ def key_information_page():
     The in vitro KoA value can be obtained in three different ways:
     1. reading it on the dialyzer's technical data sheet, if available.
     2. Reading it on a list of the most commonly used dialyzers and their KoA values
-    3. Entering the dialysis clearance data measured by the manufacturer under standard conditions with blood flow (Qb) typically of 200 or 300 ml/min and dialysate flow (Qd) of 500 or 800 ml/min, and low (<30 ml/min) or no ultrafiltration into the EuReCa "KoA" routine.
+    3. Entering the dialysis clearance data measured by the manufacturer under standard conditions with blood flow (Qb) typically of 200 or 300 ml/min and dialysate flow (Qd) of 500 or 800 ml/min, and low (<30 ml/min) or no ultrafiltration into the EuReCa "KoA" routine module.
     """)
     st.subheader("Table 5: Calculating the dialyzer mass-transfer-area coefficient (KoA) for urea")
 
@@ -288,7 +296,7 @@ def key_information_page():
         'Example': [300, 500, 0, 250]
     }
     df_table5_input = pd.DataFrame(table5_input_data)
-    st.dataframe(df_table5_input, hide_index=True)
+    st.dataframe(df_table5_input)
 
     table5_output_data = {
         '#': [1, 2],
@@ -300,4 +308,4 @@ def key_information_page():
         'Results': [250, 824]
     }
     df_table5_output = pd.DataFrame(table5_output_data)
-    st.dataframe(df_table5_output, hide_index=True)
+    st.dataframe(df_table5_output)
