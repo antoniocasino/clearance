@@ -69,7 +69,7 @@ def key_information_page():
     }
 
     df_adequacy_input = pd.DataFrame(adequacy_input_data)
-    st.dataframe(df_adequacy_input)
+    st.dataframe(df_adequacy_input,hide_index=True)
 
     st.markdown(
     """
@@ -111,7 +111,7 @@ def key_information_page():
         ]
     }
     df_adequacy_output = pd.DataFrame(adequacy_output_data)
-    st.dataframe(df_adequacy_output)
+    st.dataframe(df_adequacy_output,hide_index=True)
 
     st.markdown("""
     *Note.* This module measures various kinetic parameters, such as Kd, V, KRUN, PCRn, and the two ECCs, and verifies that at least the minimum stdKt/V and/or EKRUN has been achieved. The latter is calculated as follows: EKRUN = EKRU/V x 35 l, i.e., the equivalent renal clearance of urea (EKRU) is normalized, i.e., divided by the patient's urea volume V, and then multiplied by a typical volume equal to 35 l. Normalized renal urea clearance (KRU) is calculated in the same way: KRUN = KRU/V x 35 L.
@@ -140,7 +140,7 @@ def key_information_page():
         'Example': ["N.N.", 1, 4, 1.2, 4, 1]
     }
     df_table2a_input = pd.DataFrame(table2a_data)
-    st.dataframe(df_table2a_input)
+    st.dataframe(df_table2a_input,hide_index=True)
 
     table2a_output_data = {
         '#': [1, 2, 3, 4, 5],
@@ -154,7 +154,7 @@ def key_information_page():
         'Results': [1, 1.90, 7.41, 8.00, 4.00]
     }
     df_table2a_output = pd.DataFrame(table2a_output_data)
-    st.dataframe(df_table2a_output)
+    st.dataframe(df_table2a_output,hide_index=True)
 
     st.markdown("""
     *Note.* In this virtual patient, undergoing a once-weekly dialysis regimen, with KRUN=4 ml/min for 35 l V and eKt/V=1.2, the value of stdKt/V would be 1.90, which is lower than both the prescription target, (2.3), and the adequate minimum (2.1). In practice, the use of stdKt/V does not allow the once-weekly regimen in this patient. Conversely, EKRUN would be 7.41 ml/min for 35 L V, which is lower than the EKRUN prescription target, which in this case would be 8.0 ml/min for 35 L V, but higher than the EKRUN adequate minimum, which in this case would be 4 ml/min for 35 L V. In practice, you could continue the twice-weekly dialysis with the same parameters until the next check-up.
@@ -175,7 +175,7 @@ def key_information_page():
         'Example': ["N.N.", 2, 3, 1.0, 4, 1]
     }
     df_table2b_input = pd.DataFrame(table2b_data)
-    st.dataframe(df_table2b_input)
+    st.dataframe(df_table2b_input,hide_index=True)
 
     table2b_output_data = {
         '#': [1, 2, 3, 4, 5],
@@ -189,7 +189,7 @@ def key_information_page():
         'Results': [1.75, 2.12, 9.1, 9.0, 5.5]
     }
     df_table2b_output = pd.DataFrame(table2b_output_data)
-    st.dataframe(df_table2b_output)
+    st.dataframe(df_table2b_output,hide_index=True)
 
     st.markdown("""
     *Note:* In this patient on a 2HD/week regimen, with KRUN=3 ml/min for 35 l V and eKt/V=1.0, the calculated stdKt/V is 2.12, which is below the prescription target (2.3), but above the adequate minimum (2.1). In practice, you could continue the twice-weekly dialysis with the same parameters until the next check-up.
@@ -215,7 +215,7 @@ def key_information_page():
         'Example': ["N.N.", 2, 3, 4, 1]
     }
     df_table3_input = pd.DataFrame(table3_input_data)
-    st.dataframe(df_table3_input)
+    st.dataframe(df_table3_input,hide_index=True)
 
     table3_output_data = {
         '#': [1, 2, 3],
@@ -228,7 +228,7 @@ def key_information_page():
         'Results': [3.50, 0.98, 1.18]
     }
     df_table3_output = pd.DataFrame(table3_output_data)
-    st.dataframe(df_table3_output)
+    st.dataframe(df_table3_output,hide_index=True)
 
     # --- Module 4: Kd&Qb ---
     st.header("4. The 'Kd&Qb' Module")
@@ -258,7 +258,7 @@ def key_information_page():
         ]
     }
     df_table4_input = pd.DataFrame(table4_input_data)
-    st.dataframe(df_table4_input)
+    st.dataframe(df_table4_input,hide_index=True)
 
     table4_output_data = {
         '#': [1, 2],
@@ -268,7 +268,7 @@ def key_information_page():
         'Example': [187.4, 263]
     }
     df_table4_output = pd.DataFrame(table4_output_data)
-    st.dataframe(df_table4_output)
+    st.dataframe(df_table4_output,hide_index=True)
 
     # --- Module 5: KoA ---
     st.header("5. The 'KoA' Module")
@@ -296,7 +296,7 @@ def key_information_page():
         'Example': [300, 500, 0, 250]
     }
     df_table5_input = pd.DataFrame(table5_input_data)
-    st.dataframe(df_table5_input)
+    st.dataframe(df_table5_input,hide_index=True)
 
     table5_output_data = {
         '#': [1, 2],
@@ -308,4 +308,4 @@ def key_information_page():
         'Results': [250, 824]
     }
     df_table5_output = pd.DataFrame(table5_output_data)
-    st.dataframe(df_table5_output)
+    st.dataframe(df_table5_output,hide_index=True)
