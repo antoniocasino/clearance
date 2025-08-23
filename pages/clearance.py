@@ -73,7 +73,7 @@ def clearance_page():
     )  
     
     # NOTE: Place combo boxes inside st.expander for a group/legend
-    with st.expander("Dialyzer Urea KoA in vitro"):
+    with st.expander("Dialyzer Urea KoA in vitro", expanded=True):
         manufacturers = st.session_state.df_dialyzers['Manufacturer'].unique()
         selected_manufacturer = st.selectbox(
             "Manufacturer",

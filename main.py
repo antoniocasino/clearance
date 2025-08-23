@@ -3,7 +3,7 @@ import streamlit.components.v1 as components
 
 from pages.clearance import clearance_page 
 from pages.home import home_page
-from pages.key_informations import key_informations_page
+from pages.key_information import key_information_page
 from pages.koa import koa_page
 from pages.adequacy import adequacy_page
 from pages.assessment import assessment_page
@@ -20,13 +20,13 @@ def main():
         """,
         unsafe_allow_html=True
     )      
-    tabs = ["Home","Key Informations" ,"Adequacy", "stdKt/V & EKRU", "eKt/V", "Kd&Qb", "KoA"]    
+    tabs = ["Home","Key Information" ,"Adequacy", "stdKt/V & EKRU", "eKt/V", "Kd&Qb", "KoA"]    
     tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(tabs)
     
     with tab1:
         home_page()
     with tab2:
-        key_informations_page()
+        key_information_page()
     with tab3:
         adequacy_page()
     with tab4:

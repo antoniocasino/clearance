@@ -40,10 +40,10 @@ def ihd_calculation(inputs):
     hdfpost = inputs['HDFPOST']
     qd = inputs['QD']
     koavitro = inputs['KOAvitro']
-    c0 = inputs['C0']
-    ct = inputs['CT']
+    c0 = inputs['C0']/inputs['BUN']
+    ct = inputs['CT']/inputs['BUN']
     kruw = inputs['KRUw']
-    uo = inputs['UO']/inputs['BUN']
+    uo = inputs['UO']
     uun = inputs['UUN']/inputs['BUN']
 
 

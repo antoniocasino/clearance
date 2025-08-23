@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-def key_informations_page():
+def key_information_page():
     st.title("Key Information for Nephrologists on Using the App 'EuReCa'")
     st.markdown("""
          <style>

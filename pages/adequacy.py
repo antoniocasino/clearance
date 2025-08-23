@@ -78,13 +78,18 @@ def adequacy_page():
             if key in st.session_state:
                 st.session_state[key] = None
 
-    
-    selected_unit = st.radio(
-    "Select blood and urine concentrations units:",
-    ( 'Blood and urine urea nitrogen concentrations (mg/dl)',
-      'Blood and urine urea concentrations (mg/dl)',
-      'Blood and urine urea concentrations (mmol/l)')
-    )
+    with st.expander("Blood and Urine concentrations units", expanded=True):
+        selected_unit = st.radio(
+        "Select blood and urine concentrations units:",
+        ( 'Blood and urine urea nitrogen concentrations (mg/dl)',
+        'Blood and urine urea concentrations (mg/dl)',
+        'Blood and urine urea concentrations (mmol/l)')
+        )
+    BUN =1.0
+    if selected_unit == 'Blood and urine urea concentrations (mg/dl)':
+        BUN = 2.14
+    elif selected_unit == 'Blood and urine urea concentrations (mmol/l)':
+        BUN = 0.357
     patient_id = st.text_input(
         "Patient Identifier", 
         key="ihd_id",
@@ -172,7 +177,7 @@ def adequacy_page():
     )
     
     # NOTE: Place combo boxes inside st.expander for a group/legend
-    with st.expander("Dialyzer Urea KoA in vitro"):
+    with st.expander("Dialyzer Urea KoA in vitro", expanded=True):
         manufacturers = st.session_state.df_dialyzers['Manufacturer'].unique()
         selected_manufacturer = st.selectbox(
             "Manufacturer",
@@ -205,21 +210,23 @@ def adequacy_page():
                 step=1
             )
 
-    
-    
+    C0_min_value = 20.0*BUN
+    CO_max_value = 200.0*BUN 
     C0 = st.number_input(
-        "Pre-dialysis Blood or Serum Urea Nitrogen (mg/dl)",
-        min_value=20.0,
-        max_value=200.0,
+        "Pre-dialysis Blood Urea Nitrogen (mg/dl)",
+        min_value=C0_min_value,
+        max_value=CO_max_value,
         value=None,
         key="C0",
         step=0.1,        
     )
+    CT_min_value = 5.0*BUN
+    CT_max_value = 199.0*BUN 
     # Update session state for C0
     CT = st.number_input(
-        "Post-dialysis Blood or Serum Urea Nitrogen (mg/dl)",
-        min_value=5.0,
-        max_value=199.0,
+        "Post-dialysis Blood Urea Nitrogen (mg/dl)",
+        min_value=CT_min_value,
+        max_value=CT_max_value,
         value=None,
         key="CT",
         step=0.1
@@ -232,11 +239,12 @@ def adequacy_page():
         value=None,
         key="UO",   
         step=1
-    )   
+    )    
+    UUN_max_value = 1000.0*BUN    
     UUN = st.number_input(
-        "Urinary Urea Nitrogen (UUN, mg/dl)",
+        "Urinary Urea or Urea Nitrogen concentration (UUN, mg/dl or mmol/l)",
         min_value=0.0,
-        max_value=1000.0,
+        max_value=UUN_max_value,
         value=None,
         key="UUN",   
         step=0.1,         
@@ -256,11 +264,7 @@ def adequacy_page():
         reset = st.button("Reset", on_click=clear_inputs, key="adequacy_reset")  
 
     
-    BUN =1
-    if selected_unit == 'Blood and urine urea concentrations (mg/dl)':
-        BUN = 2.14
-    elif selected_unit == 'Blood and urine urea concentrations (mmol/l)':
-        BUN = 0.357
+    
     # Define a list of all input keys for easy management
     INPUT_KEYS = [
         "ihd_id", "lab_date", "NHDWK", "PIDI", "BW0", "BWT", "idh_time", "QB", 
