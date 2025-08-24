@@ -69,6 +69,9 @@ def key_information_page():
     }
 
     df_adequacy_input = pd.DataFrame(adequacy_input_data)
+    df_adequacy_input['Min'] = df_adequacy_input['Min'].astype(str)
+    df_adequacy_input['Max'] = df_adequacy_input['Max'].astype(str)
+    df_adequacy_input['Example'] = df_adequacy_input['Example'].astype(str)
     st.dataframe(df_adequacy_input,hide_index=True)
 
     st.markdown(
@@ -103,7 +106,7 @@ def key_information_page():
             "ml/min", "dimensionless", "dimensionless", "l", "(g/kg/day)", "ml/min",
             "ml/min per 35l V", "ml/min per 35l V", "ml/min per 35l V", "Yes/No",
             "Volume/wk", "Yes/No", "ml/h per kg", "Yes/No", "min per session",
-            "dimensionless", "dimensionless", "(l)"
+            "(l)","dimensionless", "dimensionless"
         ],
         'Results': [
             205.11, 1.24, 1.10, 39.34, 0.68, 4.04, 3.59, 6.78, 4.61, "Yes",
@@ -111,6 +114,7 @@ def key_information_page():
         ]
     }
     df_adequacy_output = pd.DataFrame(adequacy_output_data)
+    df_adequacy_output['Results'] = df_adequacy_output['Results'].astype(str)
     st.dataframe(df_adequacy_output,hide_index=True)
 
     st.markdown("""
@@ -137,9 +141,12 @@ def key_information_page():
         'Units': ["", "number", "ml/min per 35l V", "number", "days", "kg"],
         'Min': ["", 1, 0, 0.5, 2, 0.1],
         'Max': ["", 3, 7, 2.0, 7, 5],
-        'Example': ["N.N.", 1, 4, 1.2, 4, 1]
+        'Example': ["N.N.", 1, 4, 1.2, 7, 1]
     }
     df_table2a_input = pd.DataFrame(table2a_data)
+    df_table2a_input['Min'] = df_table2a_input['Min'].astype(str)
+    df_table2a_input['Max'] = df_table2a_input['Max'].astype(str)
+    df_table2a_input['Example'] = df_table2a_input['Example'].astype(str)
     st.dataframe(df_table2a_input,hide_index=True)
 
     table2a_output_data = {
@@ -154,6 +161,7 @@ def key_information_page():
         'Results': [1, 1.90, 7.41, 8.00, 4.00]
     }
     df_table2a_output = pd.DataFrame(table2a_output_data)
+    df_table2a_output['Results'] = df_table2a_output['Results'].astype(str)
     st.dataframe(df_table2a_output,hide_index=True)
 
     st.markdown("""
@@ -175,8 +183,11 @@ def key_information_page():
         'Example': ["N.N.", 2, 3, 1.0, 4, 1]
     }
     df_table2b_input = pd.DataFrame(table2b_data)
+    df_table2b_input['Min'] = df_table2b_input['Min'].astype(str)
+    df_table2b_input['Max'] = df_table2b_input['Max'].astype(str)
+    df_table2b_input['Example'] = df_table2b_input['Example'].astype(str)
     st.dataframe(df_table2b_input,hide_index=True)
-
+    
     table2b_output_data = {
         '#': [1, 2, 3, 4, 5],
         'Output': [
@@ -189,6 +200,7 @@ def key_information_page():
         'Results': [1.75, 2.12, 9.1, 9.0, 5.5]
     }
     df_table2b_output = pd.DataFrame(table2b_output_data)
+    df_table2b_output['Results'] = df_table2b_output['Results'].astype(str)
     st.dataframe(df_table2b_output,hide_index=True)
 
     st.markdown("""
@@ -215,8 +227,9 @@ def key_information_page():
         'Example': ["N.N.", 2, 3, 4, 1]
     }
     df_table3_input = pd.DataFrame(table3_input_data)
+    df_table3_input['Example'] = df_table3_input['Example'].astype(str)
     st.dataframe(df_table3_input,hide_index=True)
-
+    
     table3_output_data = {
         '#': [1, 2, 3],
         'Output': [
@@ -228,6 +241,7 @@ def key_information_page():
         'Results': [3.50, 0.98, 1.18]
     }
     df_table3_output = pd.DataFrame(table3_output_data)
+    df_table3_output['Results'] = df_table3_output['Results'].astype(str)
     st.dataframe(df_table3_output,hide_index=True)
 
     # --- Module 4: Kd&Qb ---
@@ -258,6 +272,7 @@ def key_information_page():
         ]
     }
     df_table4_input = pd.DataFrame(table4_input_data)
+    df_table4_input['Example'] = df_table4_input['Example'].astype(str)
     st.dataframe(df_table4_input,hide_index=True)
 
     table4_output_data = {
@@ -268,6 +283,7 @@ def key_information_page():
         'Example': [187.4, 263]
     }
     df_table4_output = pd.DataFrame(table4_output_data)
+    df_table4_output['Example'] = df_table4_output['Example'].astype(str)
     st.dataframe(df_table4_output,hide_index=True)
 
     # --- Module 5: KoA ---
@@ -296,6 +312,7 @@ def key_information_page():
         'Example': [300, 500, 0, 250]
     }
     df_table5_input = pd.DataFrame(table5_input_data)
+    df_table5_input['Example'] = df_table5_input['Example'].astype(str)
     st.dataframe(df_table5_input,hide_index=True)
 
     table5_output_data = {
@@ -308,4 +325,5 @@ def key_information_page():
         'Results': [250, 824]
     }
     df_table5_output = pd.DataFrame(table5_output_data)
+    df_table5_output['Results'] = df_table5_output['Results'].astype(str)
     st.dataframe(df_table5_output,hide_index=True)
