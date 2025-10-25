@@ -20,7 +20,7 @@ def main():
         """,
         unsafe_allow_html=True
     )      
-    tabs = ["Home","Key Information" ,"Adequacy", "stdKt/V & EKRU", "eKt/V", "Kd&Qb", "KoA"]    
+    tabs = ["Home","Key Information" ,"Adequacy", "stdKt/V & EKRU", "Dose Calculator", "Kd&Qb", "KoA"]    
     tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(tabs)
     
     with tab1:

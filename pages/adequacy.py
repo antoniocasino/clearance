@@ -182,7 +182,7 @@ def adequacy_page():
         selected_manufacturer = st.selectbox(
             "Manufacturer",
             manufacturers,
-            key='manufacturer_select'
+            key='manufacturer_select'            
         )
         
         models = st.session_state.df_dialyzers[st.session_state.df_dialyzers['Manufacturer'] == selected_manufacturer]['Model'].unique()
