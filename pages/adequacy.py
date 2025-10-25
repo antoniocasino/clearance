@@ -376,8 +376,31 @@ def adequacy_page():
                     st.dataframe(df_output.style.format(format_float), 
                                 column_config={"Output": st.column_config.Column(width="large")},
                                 hide_index=True) # Set the table width to 100%                
-                                                                                                            
 
+                    st.header("Simulated prescriptions for different treatments per week")
+                    simulated_data = {
+                        '#': [
+                              1,2,3,
+                              4,5,6                              
+                              ],
+                        'Output': [                                                                   
+                            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 3 treatments per week",
+                            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 2 treatments per week",
+                            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 1 treatment per week",
+                            "eKt/V per treatment to obtain the weekly target of EKRUN for 3 treatments per week",
+                            "eKt/V per treatment to obtain the weekly target of EKRUN for 2 treatments per week",
+                            "eKt/V per treatment to obtain the weekly target of EKRUN for 1 treatment per week"
+                            ],                                               
+                        'Result': [
+                            results['ektv_s3'],results['ektv_s2'],results['ektv_s1'],
+                            results['ektv_E3'],results['ektv_E2'],results['ektv_E1']
+                        ]   
+                    }
+                    df_simulated_data = pd.DataFrame(simulated_data)     
+                    st.dataframe(df_simulated_data.style.format(format_float), 
+                        column_config={"Simulated prescription": st.column_config.Column(width="large")},
+                        hide_index=True) # Set the table width to 100%     
+                               
                     pdf = create_pdf(
                         input_data ={
                         "Patient Identifier":patient_id,"Lab Date":date.strftime("%d/%m/%Y"), "Number of Hemodialysis sessions per week":NHDWK, "Preceding inter-dialytic interval":PIDI, 
@@ -407,8 +430,16 @@ def adequacy_page():
                                     "eKt/V to get EKRUN=12-KRUN ":results['Ektv_ekru'],
                                     "eKt/V to be prescribed to get stdKt/V=2.3":results['Ektv_stdktv'],
                                     },
+                        simulated_data={
+                            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 3 treatments per week ":results['ektv_s3'],
+                            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 2 treatments per week":results['ektv_s2'],
+                            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 1 treatment per week":results['ektv_s1'],
+                            "eKt/V per treatment to obtain the weekly target of EKRUN for 3 treatments per week":results['ektv_E3'],
+                            "eKt/V per treatment to obtain the weekly target of EKRUN for 2 treatments per week":results['ektv_E2'],
+                            "eKt/V per treatment to obtain the weekly target of EKRUN for 1 treatment per week":results['ektv_E1']
+                        },                                                   
                         pageBreak=True
-                    )
+                    )                   
                    
                     # Provide download button
                     st.download_button(

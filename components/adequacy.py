@@ -150,14 +150,53 @@ def ihd_calculation(inputs):
     adequfr = "Yes" if ufr < 13 else "No"
     tdn = uf / bwt / 13 * 60
 
+    # Simulated prescriptions for different treatments per week
+    # 1 treatment per week
+    a2 = 4.7787
+    b2 = -0.8301
+    d2 = -0.0096
+    e2 = 0
+    ektv_E1 = compute_ektv(a2,b2,d2,e2,krun,ufwk,pidi)
+    a2 = 5.0319
+    b2 = -0.7051
+    d2 = -0.0282
+    e2 = 0
+    ektv_s1 = compute_ektv(a2,b2,d2,e2,krun,ufwk,pidi)
+    # 2 treatments per week
+    a2 = 2.0418
+    b2 = -0.3694
+    d2 = -0.0031
+    e2 = 0.0131
+    ektv_E2 = compute_ektv(a2,b2,d2,e2,krun,ufwk,pidi)
+    a2 = 2.1771
+    b2 = -0.3351
+    d2 = -0.0131
+    e2 = 0.0144
+    ektv_s2 = compute_ektv(a2,b2,d2,e2,krun,ufwk,pidi)
+    ## 3 treatments per week
+    a2 = 1.2972
+    b2 = -0.2436
+    d2 = -0.0017
+    e2 = 0.0125
+    ektv_E3 = compute_ektv(a2,b2,d2,e2,krun,ufwk,pidi)
+    a2 = 1.2915
+    b2 = -0.2232
+    d2 = -0.0085
+    e2 = 0.0137
+    ektv_s3 = compute_ektv(a2,b2,d2,e2,krun,ufwk,pidi)
+
+
     # --- Output ---
     results = {
         "KTOT": ktot, "SPKTV": spktv, "EKTV": ektv, "VDP": vdp,"PCRN":pcrn, "Kru": kru,
         "krun": krun, "ekrun": ekrun, "ekrun_min":ekrun_min, "AdeqEKR": adeqekr, "STDKTV": stdktv,
         "AdeqStdKTV": adeqstdktv, "UFR": ufr, "AdeqUFR": adequfr, "TDN": tdn,
         "Ufwk": ufwk, "Ektv_ekru": ektv_ekru,
-        "Ektv_stdktv": ektv_stdktv
+        "Ektv_stdktv": ektv_stdktv, "ektv_E1":ektv_E1,"ektv_s1":ektv_s1,"ektv_E2":ektv_E2,"ektv_s2":ektv_s2,
+        "ektv_E3":ektv_E3,"ektv_s3":ektv_s3
     }  
     
     return results
 
+def compute_ektv(a2,b2,d2,e2,krun,ufwk,pidi):
+    return a2 + b2 * krun + d2 * ufwk + e2 * pidi

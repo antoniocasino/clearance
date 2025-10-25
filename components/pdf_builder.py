@@ -21,7 +21,7 @@ def create_vertical_table(data):
     ]))
     return table
 
-def create_pdf(input_data,output_data,pageBreak=False):
+def create_pdf(input_data,output_data,simulated_data=None,pageBreak=False):
     pdf_buffer = BytesIO()        
     doc = SimpleDocTemplate(pdf_buffer, pagesize=A4)
     elements = []
@@ -45,13 +45,26 @@ def create_pdf(input_data,output_data,pageBreak=False):
     elements.append(Paragraph("Output Data", style_heading))
     elements.append(Spacer(1, 0.5*inch))
     patient_outputs = []
-    count = 0
+
     for key, value in output_data.items():        
         patient_outputs.append([key, value])        
     
     table2 = create_vertical_table(patient_outputs)        
     elements.append(table2)
     elements.append(Spacer(1, 0.2*inch)) 
+    
+    if simulated_data:
+        elements.append(Spacer(1, 0.5*inch))    
+        elements.append(Paragraph("Simulated Prescriptions", style_heading))
+        elements.append(Spacer(1, 0.5*inch))    
+        simulated_outputs = []
+        for key, value in simulated_data.items():        
+            simulated_outputs.append([key, value])        
+        
+        table3 = create_vertical_table(simulated_outputs)        
+        elements.append(table3)
+        elements.append(Spacer(1, 0.2*inch)) 
+
     doc.build(elements)
 
     pdf_buffer.seek(0)
