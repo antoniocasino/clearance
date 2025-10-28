@@ -78,7 +78,7 @@ def key_information_page():
     """
     *Input no. 9 and 10, set 0 in conventional HD. In haemo-diafiltration (HDF) when reinfusion occurs before the dialyzer (HDF-Pre) the flow rate in ml/min must be entered in point 9, i.e., in the Pre-dialyzer infusion rate. If HDF is performed with post-dialyzer reinfusion (HDF-Post), the flow rate in ml/min must be entered. Since pre- or post-dialyzer reinfusion influences the calculation of dialysis clearance, it is important to always enter the reinfusion flow rate in the calculation software input and be aware that not entering the flow rate for HDF patients can cause significant errors in the HDF prescription and assessment.*
 
-    *Input 14: the dialyzer area mass transfer coefficient (KoA) for urea is needed, together with Qb and Qd, to predict dialyzer clearance with the Michaels equation. In this module, the KoA is automatically inserted by selecting the filter manufacturer and model from an internal table. If the filter is not listed, we recommend entering the manufacturer and model of a similar filter. The resulting KoA value can be overridden by the KoA value calculated using the app's KoA module.*
+    *Input 14: the dialyzer area mass transfer coefficient (KoA) for urea is needed, together with Qb and Qd, to predict dialyzer clearance with the Michaels equation. In this module, the KoA is automatically inserted by selecting the filter manufacturer and model from an internal table. If the filter is not listed, we recommend first computing the KoA, from Kd measured in vitro by the manufacturer,  using the app’s module and then entering “Other” below “Manufacturer” and again “Other” below “Model”. An arbitrary KoA value will appear below “Dialyzer UreaKoA in vitro”, that can be overridden by the KoA value calculated using the app&#39;s KoA module.*
 
     *The default for the app is that a 24 hour collection is performed in the 24 hours up until the measurement of the Kt/V. Number 16 and 17 will be the values from this collection. If this is the case, enter 999 in #15. If this is not the case (i.e. urine collection done the week before), for #15 calculate the urea clearance (ml/min), using blood water urea concentrations (BUN/0.93 or BUN x 1.075) and enter it there. If there is no urine output, #15 = 0.*
     """
@@ -117,10 +117,30 @@ def key_information_page():
     df_adequacy_output['Results'] = df_adequacy_output['Results'].astype(str)
     st.dataframe(df_adequacy_output,hide_index=True)
 
+    st.markdown("""Table 1a. Simulated prescriptions for different treatments per week""")
+    simulated_prescriptions_data = {
+        '#': [1, 2, 3,4,5,6],
+        'Output': [
+            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 3 treatments per week",
+            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 2 treatments per week",
+            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 1 treatments per week",
+            "eKt/V per treatment to obtain the weekly target of EKRUN for 3 treatments per week", 
+            "eKt/V per treatment to obtain the weekly target of EKRUN for 2 treatments per week",
+            "eKt/V per treatment to obtain the weekly target of EKRUN for 1 treatment per week"
+        ],
+        'Results': [0.90, 1.55, 3.49, 0.86, 1.34, 2.99]
+    }
+    df_simulated_prescriptions = pd.DataFrame(simulated_prescriptions_data)
+    st.dataframe(df_simulated_prescriptions,hide_index=True)
+              
     st.markdown("""
     *Note.* This module measures various kinetic parameters, such as Kd, V, KRUN, PCRn, and the two ECCs, and verifies that at least the minimum stdKt/V and/or EKRUN has been achieved. The latter is calculated as follows: EKRUN = EKRU/V x 35 l, i.e., the equivalent renal clearance of urea (EKRU) is normalized, i.e., divided by the patient's urea volume V, and then multiplied by a typical volume equal to 35 l. Normalized renal urea clearance (KRU) is calculated in the same way: KRUN = KRU/V x 35 L.
     UKM-based treatment adequacy is defined as one with stdKt/V >= 2.1, or with EKRUN >= 10 - 1.5 KRUN. This last equation was introduced in the article "The reasons for a clinical trial on incremental haemodialysis", a research letter by Casino et al, on behalf of the Eudial Working Group of ERA-EDTA (NDT, 2020), in preparation of the protocol of "REAL LIFE" (RandomizEd clinical triaL on the effIcacy and saFety of incremental haEmodialysis), a randomized, multicentre and prospective study still ongoing (NCT04360694) evaluating the efficacy and safety of incremental hemodialysis compared to the standard regimen of three weekly sessions. It means that the minimum EKRUN to be delivered varies as a function of KRUN, being 10 ml/min for 35 l V when KRUN=0 and decreasing by 1.5 times the actual value of KRUN. For example, with KRUN = 2, minimum EKRUN = 10 - 1.5 x 2 = 7 ml/min for 35 l V. Of note, in anuric patients, EKRUN of 10 ml/min per 35 l V corresponds to eKt/V of 1.05 on 3HD/wk schedule, which in turn corresponds to stdKt/V=2.1 v/wk. This module also verifies the adequacy of the ultrafiltration rate, i.e., UFR<=13 ml/h/kg, and calculates the session duration (TDN) that would be required to achieve a UFR of 13 ml/h/kg. Finally, it estimates the weekly water load to be ultrafiltered.
     """)
+
+    st.markdown ("""The table named “Simulated Prescriptions for different treatments per week” has been added to predict the eKt/V per treatment to obtain the weekly stdKt/V=2.3 or the target of EKRUN (i.e., 12 –
+    KRUN) for 3, 2, or 1 treatment per week, in the patient being considered.""")
+    
 
     # --- Module 2: stdKt/V & EKRUN ---
     st.header("2. The 'stdKt/V & EKRUN' Module")
@@ -210,7 +230,7 @@ def key_information_page():
     """)
 
     # --- Module 3: eKt/V ---
-    st.header("3. The 'eKt/V' Module")
+    st.header("3. The 'Dose Calculator' Module")
     st.write("""
     This module calculates the dialysis doses to be prescribed to achieve targets based on both stdKt/V and EKRUN with the selected treatment schedule, for given values of length of the previous interdialytic interval and associated weight gain, KRU and V of the patient.
     """)
