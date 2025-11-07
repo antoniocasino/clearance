@@ -89,7 +89,7 @@ def adequacy_page():
     if selected_unit == 'Blood and urine urea concentrations (mg/dl)':
         BUN = 2.14
     elif selected_unit == 'Blood and urine urea concentrations (mmol/l)':
-        BUN = 2.8
+        BUN = 0.357
     patient_id = st.text_input(
         "Patient Identifier", 
         key="ihd_id",
@@ -120,19 +120,19 @@ def adequacy_page():
     
     BW0 = st.number_input(
         "Pre-dialysis Body Weight (kg)",
-        min_value=20,
-        max_value=140,
+        min_value=20.0,
+        max_value=140.0,
         value=None,
         key="BW0",
-        step=1,        
+        step=0.1,        
     )                       
     BWT = st.number_input(
         "Post-dialysis Body weight (kg)",
-        min_value=20,
-        max_value=140, 
+        min_value=20.0,
+        max_value=140.0, 
         value=None,
         key="BWT",
-        step=1
+        step=0.1
     )
     T = st.number_input(
         "Session length (min)",
