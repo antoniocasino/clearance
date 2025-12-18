@@ -144,7 +144,7 @@ def ihd_calculation(inputs):
         pcrn = adjc0 / (f + g * ektv + h / ektv) + 0.168
 
     ekrun_min = 10 - 1.5 * krun
-    adeqekr = "Yes" if ekrun > -ekrun_min else "No"
+    adeqekr = "Yes" if ekrun > ekrun_min else "No"
     adeqstdktv = "Yes" if stdktv > 2.0999 else "No"
     ufr = uf / bwt / (t / 60)
     adequfr = "Yes" if ufr < 13 else "No"
