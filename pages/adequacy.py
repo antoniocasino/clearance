@@ -377,30 +377,45 @@ def adequacy_page():
                                 column_config={"Output": st.column_config.Column(width="large")},
                                 hide_index=True) # Set the table width to 100%                
 
-                    st.header("Simulated prescriptions for different treatments per week")
-                    simulated_data = {
-                        '#': [
-                              1,2,3,
-                              4,5,6                              
-                              ],
-                        'Output': [                                                                   
-                            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 3 treatments per week",
-                            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 2 treatments per week",
-                            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 1 treatment per week",
-                            "eKt/V per treatment to obtain the weekly target of EKRUN for 3 treatments per week",
-                            "eKt/V per treatment to obtain the weekly target of EKRUN for 2 treatments per week",
-                            "eKt/V per treatment to obtain the weekly target of EKRUN for 1 treatment per week"
-                            ],                                               
-                        'Result': [
-                            results['ektv_s3'],results['ektv_s2'],results['ektv_s1'],
-                            results['ektv_E3'],results['ektv_E2'],results['ektv_E1']
-                        ]   
-                    }
-                    df_simulated_data = pd.DataFrame(simulated_data)     
-                    st.dataframe(df_simulated_data.style.format(format_float), 
-                        column_config={"Simulated prescription": st.column_config.Column(width="large")},
-                        hide_index=True) # Set the table width to 100%     
-                               
+                    st.header("Simulated prescriptions")
+                    st.html("<h3>Dialysis dose required per treatment to achieve the stdKt/V or EKRUN target</h3>")
+                    # 1. Define the data
+                    simulated_data = [
+                        [results['ektv_s1'], results['ektv_s1']*1.128, results['ektv_E1'], results['ektv_E1']*1.128],                       
+                        [results['ektv_s2'], results['ektv_s2']*1.128, results['ektv_E2'], results['ektv_E2']*1.128],
+                        [results['ektv_s3'], results['ektv_s3']*1.128, results['ektv_E3'], results['ektv_E3']*1.128]
+                    ]
+
+                    # 2. Define the row labels (Index)
+                    simulated_index_labels = ["1 HD/week", "2 HD/week", "3 HD/week"]
+
+                    # 3. Create Hierarchical Columns (MultiIndex)
+                    # This creates the grouped headers seen in the image
+                    simulated_columns = pd.MultiIndex.from_tuples([
+                        ("To obtain stdKt/V target", "eKt/V"),
+                        (" ", "spKt/V"),
+                        ("To obtain EKRUN target", "eKt/V"),
+                        ("  ", "spKt/V")
+                    ])
+
+                    # 4. Create the DataFrame
+                    df_simulated_data = pd.DataFrame(simulated_data, index=simulated_index_labels, columns=simulated_columns)                   
+
+                    # 5. Display the table
+                    # st.table renders a static table (better for this specific look)
+                    # st.dataframe renders an interactive grid
+                    st.table(df_simulated_data)                        
+
+                    simulated_data=[
+                            [results['ektv_s1'],results['ektv_s1']*1.128,results['ektv_E1'],results['ektv_E1']*1.128],
+                            [results['ektv_s2'],results['ektv_s2']*1.128,results['ektv_E2'],results['ektv_E2']*1.128],
+                            [results['ektv_s3'],results['ektv_s3']*1.128,results['ektv_E3'],results['ektv_E3']*1.128],                            
+                        ]
+                    simulated_data_formatted = [
+                        [format_float(value) for value in row] 
+                        for row in simulated_data
+                    ]       
+                        
                     pdf = create_pdf(
                         input_data ={
                         "Patient Identifier":patient_id,"Lab Date":date.strftime("%d/%m/%Y"), "Number of Hemodialysis sessions per week":NHDWK, "Preceding inter-dialytic interval":PIDI, 
@@ -430,14 +445,7 @@ def adequacy_page():
                                     "eKt/V to get EKRUN=12-KRUN ":results['Ektv_ekru'],
                                     "eKt/V to be prescribed to get stdKt/V=2.3":results['Ektv_stdktv'],
                                     },
-                        simulated_data={
-                            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 3 treatments per week ":results['ektv_s3'],
-                            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 2 treatments per week":results['ektv_s2'],
-                            "eKt/V per treatment to obtain the weekly stdKt/V=2.3 for 1 treatment per week":results['ektv_s1'],
-                            "eKt/V per treatment to obtain the weekly target of EKRUN for 3 treatments per week":results['ektv_E3'],
-                            "eKt/V per treatment to obtain the weekly target of EKRUN for 2 treatments per week":results['ektv_E2'],
-                            "eKt/V per treatment to obtain the weekly target of EKRUN for 1 treatment per week":results['ektv_E1']
-                        },                                                   
+                        simulated_data=simulated_data_formatted,                                                                             
                         pageBreak=True
                     )                   
                    

@@ -21,6 +21,67 @@ def create_vertical_table(data):
     ]))
     return table
 
+def create_complex_table(data_values):
+    """
+    Creates the specific 5-column table with merged headers 
+    shown in the image.
+    Expects data_values to be a list of 3 rows (lists), 
+    each containing 4 numbers corresponding to the columns.
+    """
+    # 1. Define the Header Rows
+    # Row 0: Top headers with placeholders for spanned cells
+    # Row 1: Sub headers
+    table_data = [
+        ['', 'To obtain stdKt/V target', '', 'To obtain EKRUN target', ''], 
+        ['', 'eKt/V', 'spKt/V', 'eKt/V', 'spKt/V']
+    ]
+    
+    # 2. Define the Row Labels
+    row_labels = ["1 HD/week", "2 HD/week", "3 HD/week"]
+    
+    # 3. Combine Labels with Data
+    # If data_values is missing or incomplete, we fill with placeholders
+    if not data_values:
+        data_values = [["-"]*4 for _ in range(3)]
+
+    for i, label in enumerate(row_labels):
+        # Safety check to ensure we don't crash if data is missing rows
+        row_vals = data_values[i] if i < len(data_values) else ["-", "-", "-", "-"]
+        # Create the full row: [Label, val1, val2, val3, val4]
+        table_data.append([label] + row_vals)
+
+    # 4. Create Table Object
+    # We set specific column widths to match the look: first col slightly wider
+    t = Table(table_data, colWidths=[1.2*inch, 1*inch, 1*inch, 1*inch, 1*inch])
+
+    # 5. Apply Styling
+    t.setStyle(TableStyle([
+        # --- Merging Cells (Spans) ---
+        # Span 'To obtain stdKt/V target' across col 1 and 2 (indices 1,2) of row 0
+        ('SPAN', (1, 0), (2, 0)),
+        # Span 'To obtain EKRUN target' across col 3 and 4 (indices 3,4) of row 0
+        ('SPAN', (3, 0), (4, 0)),
+        # Span the empty corner cell (optional, but keeps it clean)
+        ('SPAN', (0, 0), (0, 1)),
+
+        # --- Fonts & Alignment ---
+        ('FONTNAME', (0, 0), (-1, 1), 'Helvetica-Bold'), # Bold headers
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),           # Center all text
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),          # Vertically center
+        
+        # --- Background Colors ---
+        # Top Header Row (White or Light Grey)
+        ('BACKGROUND', (1, 0), (-1, 0), colors.whitesmoke),
+        # Sub-header Row + First Column (Grey)
+        ('BACKGROUND', (0, 0), (0, -1), colors.lightgrey), # First column
+        ('BACKGROUND', (0, 1), (-1, 1), colors.lightgrey), # Sub-headers
+
+        # --- Borders ---
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+    
+    return t
+
 def create_pdf(input_data,output_data,simulated_data=None,pageBreak=False):
     pdf_buffer = BytesIO()        
     doc = SimpleDocTemplate(pdf_buffer, pagesize=A4)
@@ -56,12 +117,9 @@ def create_pdf(input_data,output_data,simulated_data=None,pageBreak=False):
     if simulated_data:
         elements.append(Spacer(1, 0.5*inch))    
         elements.append(Paragraph("Simulated Prescriptions", style_heading))
-        elements.append(Spacer(1, 0.5*inch))    
-        simulated_outputs = []
-        for key, value in simulated_data.items():        
-            simulated_outputs.append([key, value])        
+        elements.append(Spacer(1, 0.5*inch))           
         
-        table3 = create_vertical_table(simulated_outputs)        
+        table3 = create_complex_table(simulated_data)
         elements.append(table3)
         elements.append(Spacer(1, 0.2*inch)) 
 
