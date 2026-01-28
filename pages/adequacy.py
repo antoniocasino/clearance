@@ -336,8 +336,8 @@ def adequacy_page():
                                    "Urea distribution volume (double pool)",
                                    "Protein catabolic rate (g/kg/day)",
                                    "Renal urea clearance (calculated)",
-                                   "KRU normalized per V 35 l",
-                                   "Equivalent Renal Urea Clearance normalized per V 35 l",
+                                   "KRU normalized per V 35 l (KRUN)",
+                                   "Equivalent Renal Urea Clearance normalized per V 35 l (EKRUN)",
                                    "EKRUN_variable target (10-1.5 KRUN)*",
                                    "EKRUN ≥ 10 – 1.5 KRUN *",
                                    "Standard Kt/V",
@@ -405,12 +405,12 @@ def adequacy_page():
                     # st.table renders a static table (better for this specific look)
                     # st.dataframe renders an interactive grid
                     st.table(df_simulated_data)                        
-
+                    st.html("<h5>*Note: spKt/V = single pool Kt/V assuming a session lenght of 4 hours.</h5>")
                     simulated_data=[
                             [results['ektv_s1'],results['ektv_s1']*1.128,results['ektv_E1'],results['ektv_E1']*1.128],
                             [results['ektv_s2'],results['ektv_s2']*1.128,results['ektv_E2'],results['ektv_E2']*1.128],
                             [results['ektv_s3'],results['ektv_s3']*1.128,results['ektv_E3'],results['ektv_E3']*1.128],                            
-                        ]
+                    ]
                     simulated_data_formatted = [
                         [format_float(value) for value in row] 
                         for row in simulated_data
@@ -432,10 +432,10 @@ def adequacy_page():
                                     "Urea distribution volume (double pool)":results['VDP'],
                                     "Protein catabolic rate (g/kg/day)":results["PCRN"],
                                     "Renal urea clearance (calculated)":results['Kru'],
-                                    "KRU normalized per V 35 l":results['krun'],
-                                    "Equivalent Renal Clearance per V 35 l ":results['ekrun'],
+                                    "KRU normalized per V 35 l (KRUN)":results['krun'],
+                                    "Equivalent Renal Clearance per V 35 l (EKRUN) ":results['ekrun'],
                                     "EKRUN_variable target_ min = 10-1.5 KRUN":results['ekrun_min'],                                  
-                                    "EKR35 ≥10 – 1.5 KRUN *":results['AdeqEKR'],
+                                    "EKRUN ≥10 – 1.5 KRUN *":results['AdeqEKR'],
                                     "Standard Kt/V":results['STDKTV'],
                                     "StdKt/V ≥ 2.1":results['AdeqStdKTV'],
                                     "Ultrafiltration rate ":results['UFR'],
