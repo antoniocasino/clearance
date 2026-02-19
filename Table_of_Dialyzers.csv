@@ -92,10 +92,13 @@ Bellco/Medtronic;Phylther HF 15 SD;1242
 Bellco/Medtronic;Phylther HF 17 SD;1359
 Bellco/Medtronic;Phylther HF 20 SD;1392
 Bellco/Medtronic;Phylther HF 22 SD;1427
+Fresenius:F250;1662
+Fresenius;F180;1064
+Fresenius;C17H;1214
 Fresenius;F10HPS;945
 Fresenius;F5HPS;606
 Fresenius;F6HPS;746
-Fresenius;F 7 HPS;789
+Fresenius;F7HPS;789
 Fresenius;F8HPS;849
 Fresenius;FX10;977
 Fresenius;FX100;1351
@@ -105,9 +108,9 @@ Fresenius;FX5;824
 Fresenius;FX50 Classicx;866
 Fresenius;FX60;977
 Fresenius;FX60 Classicx;1068
-Fresenius;FX 8;888
-Fresenius;FX 80;1292
-Fresenius;FX 80 Classicx;1394
+Fresenius;FX8;888
+Fresenius;FX80;1292
+Fresenius;FX80 Classicx;1394
 Fresenius;FX Cordiax 100;1429
 Fresenius;FX Cordiax 120;1450
 Fresenius;FX Cordiax 40;866
@@ -117,8 +120,8 @@ Fresenius;FX Cordiax 80;1394
 Fresenius;FX HDF 1000;1421
 Fresenius;FX HDF 600;1148
 Fresenius;FX HDF 800;1365
-Fresenius;HF 80;801
-Fresenius;HF  80 S;801
+Fresenius;HF80;801
+Fresenius;HF80S;801
 Fresenius;Optiflux F160NR;1167
 Fresenius;Optiflux F180NR;1321
 Fresenius;Optiflux F200NR;1415
