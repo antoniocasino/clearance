@@ -94,7 +94,6 @@ Bellco/Medtronic;Phylther HF 20 SD;1392
 Bellco/Medtronic;Phylther HF 22 SD;1427
 Fresenius:F250;1662
 Fresenius;F180;1064
-Fresenius;C17H;1214
 Fresenius;F10HPS;945
 Fresenius;F5HPS;606
 Fresenius;F6HPS;746
@@ -148,6 +147,7 @@ Medtronic/Mozarc Medical;Clearum HS 15;1034
 Medtronic/Mozarc Medical;Clearum HS 17;1128
 Medtronic/Mozarc Medical;Clearum HS 20;1221
 Medtronic/Mozarc Medical;Clearum HS 22;1354
+Nipro;C17H;1214
 Nipro;Elisio 09H;746
 Nipro;Elisio 11H;861
 Nipro;Elisio 11L;689
