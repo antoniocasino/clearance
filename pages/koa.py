@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from components.koa_calculator import koa
+from components.batch_ui import render_batch_section
 def koa_page():    
     st.title("Dialyzer's characteristics (KoA)") 
     st.markdown("""
@@ -76,3 +77,6 @@ def koa_page():
                     }
                     df_input = pd.DataFrame(input_data)                
                     st.dataframe(df_input,hide_index=True)                 
+
+    render_batch_section("koa")
+

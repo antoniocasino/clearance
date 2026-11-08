@@ -2,6 +2,7 @@ import streamlit as st
 import datetime
 from components.adequacy import ihd_calculation
 from components.pdf_builder import create_pdf
+from components.batch_ui import render_batch_section
 import pandas as pd
 
 def adequacy_page():
@@ -458,4 +459,5 @@ def adequacy_page():
                     )                    
                 else:
                     st.write(results)  # Print the error message
-                                    
+
+    render_batch_section("adequacy")
