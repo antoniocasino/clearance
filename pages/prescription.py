@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from components.prescription_calculator import prescription_calculation
 from components.pdf_builder import create_pdf
+from components.batch_ui import render_batch_section
 
 def prescription_page():    
     st.title("eKt/V") 
@@ -136,3 +137,5 @@ def prescription_page():
                     )                    
                 else:
                     st.write(results) 
+
+    render_batch_section("prescription")

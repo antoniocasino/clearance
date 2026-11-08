@@ -1,8 +1,4 @@
 import math
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph
-from reportlab.lib.styles import getSampleStyleSheet
-from io import BytesIO
 
 def calculate_kdn_qbwn( vdp, uf, koavitro, hdfpre, hdfpost, qd, t, ekvt):
     """
