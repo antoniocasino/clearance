@@ -3,7 +3,6 @@ import datetime
 import pandas as pd
 from components.kdn_calculator import calculate_kdn_qbwn
 from components.pdf_builder import create_pdf
-from components.batch_ui import render_batch_section
 
 
 def clearance_page():
@@ -215,5 +214,4 @@ def clearance_page():
                     )
                 else:
                     st.write(results)  # Print the error message
-
-    render_batch_section("clearance")
+                                        

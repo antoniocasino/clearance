@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 from components.assessment_calculator import assessment_calculation
 from components.pdf_builder import create_pdf
-from components.batch_ui import render_batch_section
 
 def assessment_page():    
     st.title("stdKt/V & EKRU") 
@@ -146,5 +145,3 @@ def assessment_page():
                     )                    
                 else:
                     st.write(results) 
-
-    render_batch_section("assessment")
