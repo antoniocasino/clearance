@@ -8,9 +8,11 @@ from pages.koa import koa_page
 from pages.adequacy import adequacy_page
 from pages.assessment import assessment_page
 from pages.prescription import prescription_page
+from components.analytics import inject_google_analytics
 
 def main():
-    st.set_page_config(page_title="Clearance Calculator")            
+    st.set_page_config(page_title="Clearance Calculator")
+    inject_google_analytics()
     st.markdown("""
         <style>
          [data-baseweb="tab"]>div {

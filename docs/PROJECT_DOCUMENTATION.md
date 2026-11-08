@@ -299,6 +299,8 @@ When a user uploads an updated `.xlsx` file in any of the 5 tabs:
   - `save_all_templates_to_directory(directory_path: str = None) -> dict[str, str]`
 - [`components/batch_ui.py`](../components/batch_ui.py):
   - `render_batch_section(tab_key: str) -> None`: Renders the template download, file uploader, live progress bar, metrics, results dataframe, and output Excel download button in Streamlit.
+- [`components/analytics.py`](../components/analytics.py):
+  - `inject_google_analytics(measurement_id: str | None = None) -> bool`: Resolves the GA4 Measurement ID from function parameter, `GA_MEASUREMENT_ID` environment variable, `st.secrets["GA_MEASUREMENT_ID"]`, or `DEFAULT_GA_MEASUREMENT_ID`, patches Streamlit's static `index.html` `<head>` when writable, and injects the `gtag.js` script via `streamlit.components.v1.html`.
 
 ---
 

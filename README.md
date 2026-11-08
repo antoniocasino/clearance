@@ -82,6 +82,7 @@ clearance/
 │   └── koa.py                           # Tab 7: KoA
 ├── components/                          # Core calculation engines & utilities
 │   ├── adequacy.py                      # Double-pool UKM & simulated prescription engine
+│   ├── analytics.py                     # Google Analytics (GA4) integration
 │   ├── assessment_calculator.py         # stdKt/V & EKRUN assessment calculator
 │   ├── prescription_calculator.py       # Target eKt/V dose calculator
 │   ├── kdn_calculator.py                # Required Kdn & Qbn iterative calculator
@@ -90,10 +91,29 @@ clearance/
 │   ├── excel_handler.py                 # Excel template generator, validator & batch processor
 │   └── batch_ui.py                      # Reusable Streamlit UI for batch Excel processing
 └── tests/                               # Automated unit & integration test suite
+    ├── test_analytics.py                # Unit tests for Google Analytics (GA4) integration
     ├── test_calculators.py              # Unit tests for all 5 clinical calculators
     ├── test_excel_templates_and_batch.py# Tests for Excel templates, legends & batch processing
     └── test_batch_ui.py                 # UI tests for Streamlit batch component & progress bar
 ```
+
+---
+
+## Google Analytics (GA4) Configuration
+
+The app includes built-in Google Analytics 4 (`gtag.js`) support via [`components/analytics.py`](components/analytics.py) and [`main.py`](main.py). You can provide your GA4 Measurement ID (`G-XXXXXXXXXX`) in any of three ways:
+
+1. **Streamlit Secrets (Recommended for Streamlit Community Cloud)**:  
+   In your Streamlit Cloud App Settings → **Secrets** (or locally in `.streamlit/secrets.toml`), add:
+   ```toml
+   GA_MEASUREMENT_ID = "G-XXXXXXXXXX"
+   ```
+2. **Environment Variable**:
+   ```bash
+   export GA_MEASUREMENT_ID="G-XXXXXXXXXX"
+   ```
+3. **Direct Constant**:  
+   Set `DEFAULT_GA_MEASUREMENT_ID = "G-XXXXXXXXXX"` in [`components/analytics.py`](components/analytics.py).
 
 ---
 
